@@ -1,0 +1,84 @@
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.07 sec)
+
+mysql> use extra_db
+Database changed
+mysql> create table student(student_id int unsigned,student_age tinyint unsigned,student_marks decimal(5,2));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+
+mysql> create table Library_Details(book_id int primary key,
+    -> title_code int unsigned,author_code int unsigned,category_code int unsigned,
+    -> published_year int unsigned,price int unsigned,quantity int unsigned,member_id int unsigned);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc Library_Details;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| book_id        | int          | NO   | PRI | NULL    |       |
+| title_code     | int unsigned | YES  |     | NULL    |       |
+| author_code    | int unsigned | YES  |     | NULL    |       |
+| category_code  | int unsigned | YES  |     | NULL    |       |
+| published_year | int unsigned | YES  |     | NULL    |       |
+| price          | int unsigned | YES  |     | NULL    |       |
+| quantity       | int unsigned | YES  |     | NULL    |       |
+| member_id      | int unsigned | YES  |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> show create table Library_Details;
++-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table           | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
++-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Library_Details | CREATE TABLE `library_details` (
+  `book_id` int NOT NULL,
+  `title_code` int unsigned DEFAULT NULL,
+  `author_code` int unsigned DEFAULT NULL,
+  `category_code` int unsigned DEFAULT NULL,
+  `published_year` int unsigned DEFAULT NULL,
+  `price` int unsigned DEFAULT NULL,
+  `quantity` int unsigned DEFAULT NULL,
+  `member_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`book_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> create table EMPLOYEE(emp_id int unsigned,emp_name varchar(20),
+    -> emp_login_password varbinary(2),salary decimal(4,2),
+    -> doj date,gender enum('Female','Male','Others'),
+    '> skills set('python','java','mysql','frontend','docker','aws'),
+    '> address tinytext,
+    '> employee_DP longblob);
