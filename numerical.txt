@@ -82,3 +82,1038 @@ mysql> create table EMPLOYEE(emp_id int unsigned,emp_name varchar(20),
     '> skills set('python','java','mysql','frontend','docker','aws'),
     '> address tinytext,
     '> employee_DP longblob);
+
+
+
+Microsoft Windows [Version 10.0.26200.8039]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 21
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.04 sec)
+
+mysql> show tables;
+ERROR 1046 (3D000): No database selected
+mysql> use extra_db;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_extra_db |
++--------------------+
+| employee           |
+| library_details    |
+| student            |
++--------------------+
+3 rows in set (0.04 sec)
+
+mysql> desc EMPLOYEE;
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+| Field              | Type                                                   | Null | Key | Default | Extra |
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+| emp_id             | int unsigned                                           | YES  |     | NULL    |       |
+| emp_name           | varchar(2)                                             | YES  |     | NULL    |       |
+| emp_login_password | varbinary(2)                                           | YES  |     | NULL    |       |
+| salary             | decimal(4,2)                                           | YES  |     | NULL    |       |
+| doj                | date                                                   | YES  |     | NULL    |       |
+| gender             | enum('Female','Male','Others')                         | YES  |     | NULL    |       |
+| skills             | set('python','java','mysql','frontend','docker','aws') | YES  |     | NULL    |       |
+| address            | tinytext                                               | YES  |     | NULL    |       |
+| emp_dp             | longblob                                               | YES  |     | NULL    |       |
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+9 rows in set (0.01 sec)
+
+mysql> -- alter and syntax
+mysql> /* alter cmd to add a column */
+mysql> alter table EMPLOYEE add column exp_year tinyint unsigned;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc EMPLOYEE;
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+| Field              | Type                                                   | Null | Key | Default | Extra |
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+| emp_id             | int unsigned                                           | YES  |     | NULL    |       |
+| emp_name           | varchar(2)                                             | YES  |     | NULL    |       |
+| emp_login_password | varbinary(2)                                           | YES  |     | NULL    |       |
+| salary             | decimal(4,2)                                           | YES  |     | NULL    |       |
+| doj                | date                                                   | YES  |     | NULL    |       |
+| gender             | enum('Female','Male','Others')                         | YES  |     | NULL    |       |
+| skills             | set('python','java','mysql','frontend','docker','aws') | YES  |     | NULL    |       |
+| address            | tinytext                                               | YES  |     | NULL    |       |
+| emp_dp             | longblob                                               | YES  |     | NULL    |       |
+| exp_year           | tinyint unsigned                                       | YES  |     | NULL    |       |
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table student add coumn address tinytext;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'address tinytext' at line 1
+mysql> alter table student add column address tinytext;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
+| address       | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table student add column s_no in unsigned first;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'in unsigned first' at line 1
+mysql> alter table studnet add column s_no int unsigned first;
+ERROR 1146 (42S02): Table 'extra_db.studnet' doesn't exist
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
+| address       | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter alter table studnet add column s_no int unsigned first;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'alter table studnet add column s_no int unsigned first' at line 1
+mysql> alter table student add column s_no int unsigned first;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
+| address       | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student add column student_phno char(10) after student_id;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_phno  | char(10)         | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
+| address       | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> -- alter modify to change datatype of column
+mysql> alter table student modify column student_phno varchar(30);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_phno  | varchar(30)      | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
+| address       | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student modify address tinytext after student_id;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| address       | tinytext         | YES  |     | NULL    |       |
+| student_phno  | varchar(30)      | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student rename column student_phno to  phone_number;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| address       | tinytext         | YES  |     | NULL    |       |
+| phone_number  | varchar(30)      | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(5,2)     | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student change student_id student_rollno bigint unsigned;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table student drop column phone_number;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++----------------+------------------+------+-----+---------+-------+
+| Field          | Type             | Null | Key | Default | Extra |
++----------------+------------------+------+-----+---------+-------+
+| s_no           | int unsigned     | YES  |     | NULL    |       |
+| student_rollno | bigint unsigned  | YES  |     | NULL    |       |
+| address        | tinytext         | YES  |     | NULL    |       |
+| student_age    | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks  | decimal(5,2)     | YES  |     | NULL    |       |
++----------------+------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student add column student_email varchar(30),
+    -> rename column address to student_address,
+    -> drop column s_no;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++-----------------+------------------+------+-----+---------+-------+
+| Field           | Type             | Null | Key | Default | Extra |
++-----------------+------------------+------+-----+---------+-------+
+| student_rollno  | bigint unsigned  | YES  |     | NULL    |       |
+| student_address | tinytext         | YES  |     | NULL    |       |
+| student_age     | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks   | decimal(5,2)     | YES  |     | NULL    |       |
+| student_email   | varchar(30)      | YES  |     | NULL    |       |
++-----------------+------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_extra_db |
++--------------------+
+| employee           |
+| library_details    |
+| student            |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> create table student1(student_id int unsigned,student_age tinyint unsigned,student_marks decimal(4,2));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc student1;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(4,2)     | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table student1 add column student_email tinytext;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student1;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(4,2)     | YES  |     | NULL    |       |
+| student_email | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table student1 add column s_no int unsigned first;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student1;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(4,2)     | YES  |     | NULL    |       |
+| student_email | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student1 add column student_phno char(10) after student_id;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student1;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_phno  | char(10)         | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(4,2)     | YES  |     | NULL    |       |
+| student_email | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student modify column student_marks decimal(7,2);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student1
+    -> ;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_phno  | char(10)         | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(4,2)     | YES  |     | NULL    |       |
+| student_email | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student1 modify column student_marks decimal(8,2);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student1;
++---------------+------------------+------+-----+---------+-------+
+| Field         | Type             | Null | Key | Default | Extra |
++---------------+------------------+------+-----+---------+-------+
+| s_no          | int unsigned     | YES  |     | NULL    |       |
+| student_id    | int unsigned     | YES  |     | NULL    |       |
+| student_phno  | char(10)         | YES  |     | NULL    |       |
+| student_age   | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks | decimal(8,2)     | YES  |     | NULL    |       |
+| student_email | tinytext         | YES  |     | NULL    |       |
++---------------+------------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> alter table student1 rename column student_emai_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> alter table student1 rename column student_email to student_email_id;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student1;
++------------------+------------------+------+-----+---------+-------+
+| Field            | Type             | Null | Key | Default | Extra |
++------------------+------------------+------+-----+---------+-------+
+| s_no             | int unsigned     | YES  |     | NULL    |       |
+| student_id       | int unsigned     | YES  |     | NULL    |       |
+| student_phno     | char(10)         | YES  |     | NULL    |       |
+| student_age      | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks    | decimal(8,2)     | YES  |     | NULL    |       |
+| student_email_id | tinytext         | YES  |     | NULL    |       |
++------------------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student1 change student_id student_rollno bigint unsigned;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student1;
++------------------+------------------+------+-----+---------+-------+
+| Field            | Type             | Null | Key | Default | Extra |
++------------------+------------------+------+-----+---------+-------+
+| s_no             | int unsigned     | YES  |     | NULL    |       |
+| student_rollno   | bigint unsigned  | YES  |     | NULL    |       |
+| student_phno     | char(10)         | YES  |     | NULL    |       |
+| student_age      | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks    | decimal(8,2)     | YES  |     | NULL    |       |
+| student_email_id | tinytext         | YES  |     | NULL    |       |
++------------------+------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student1 drop column student_phno;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student1;
++------------------+------------------+------+-----+---------+-------+
+| Field            | Type             | Null | Key | Default | Extra |
++------------------+------------------+------+-----+---------+-------+
+| s_no             | int unsigned     | YES  |     | NULL    |       |
+| student_rollno   | bigint unsigned  | YES  |     | NULL    |       |
+| student_age      | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks    | decimal(8,2)     | YES  |     | NULL    |       |
+| student_email_id | tinytext         | YES  |     | NULL    |       |
++------------------+------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> show EMPLOYEE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'EMPLOYEE' at line 1
+mysql> desc EMPLOYEE;
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+| Field              | Type                                                   | Null | Key | Default | Extra |
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+| emp_id             | int unsigned                                           | YES  |     | NULL    |       |
+| emp_name           | varchar(2)                                             | YES  |     | NULL    |       |
+| emp_login_password | varbinary(2)                                           | YES  |     | NULL    |       |
+| salary             | decimal(4,2)                                           | YES  |     | NULL    |       |
+| doj                | date                                                   | YES  |     | NULL    |       |
+| gender             | enum('Female','Male','Others')                         | YES  |     | NULL    |       |
+| skills             | set('python','java','mysql','frontend','docker','aws') | YES  |     | NULL    |       |
+| address            | tinytext                                               | YES  |     | NULL    |       |
+| emp_dp             | longblob                                               | YES  |     | NULL    |       |
+| exp_year           | tinyint unsigned                                       | YES  |     | NULL    |       |
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> alter table EMPLOYEE modify column emp_name varchar(20);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc EMPLOYEE;
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+| Field              | Type                                                   | Null | Key | Default | Extra |
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+| emp_id             | int unsigned                                           | YES  |     | NULL    |       |
+| emp_name           | varchar(20)                                            | YES  |     | NULL    |       |
+| emp_login_password | varbinary(2)                                           | YES  |     | NULL    |       |
+| salary             | decimal(4,2)                                           | YES  |     | NULL    |       |
+| doj                | date                                                   | YES  |     | NULL    |       |
+| gender             | enum('Female','Male','Others')                         | YES  |     | NULL    |       |
+| skills             | set('python','java','mysql','frontend','docker','aws') | YES  |     | NULL    |       |
+| address            | tinytext                                               | YES  |     | NULL    |       |
+| emp_dp             | longblob                                               | YES  |     | NULL    |       |
+| exp_year           | tinyint unsigned                                       | YES  |     | NULL    |       |
++--------------------+--------------------------------------------------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> rename table student1 to student_info;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc student1;
+ERROR 1146 (42S02): Table 'extra_db.student1' doesn't exist
+mysql> desc student_info;
++------------------+------------------+------+-----+---------+-------+
+| Field            | Type             | Null | Key | Default | Extra |
++------------------+------------------+------+-----+---------+-------+
+| s_no             | int unsigned     | YES  |     | NULL    |       |
+| student_rollno   | bigint unsigned  | YES  |     | NULL    |       |
+| student_age      | tinyint unsigned | YES  |     | NULL    |       |
+| student_marks    | decimal(8,2)     | YES  |     | NULL    |       |
+| student_email_id | tinytext         | YES  |     | NULL    |       |
++------------------+------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_extra_db |
++--------------------+
+| employee           |
+| library_details    |
+| student            |
+| student_info       |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> use sample_data;
+ERROR 1049 (42000): Unknown database 'sample_data'
+mysql> create database sample_data;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use sample_data;
+Database changed
+mysql> create table book(bookid int unsigned,bookname varchar(20),cost int unsigned;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create table book(bookid int unsigned,bookname varchar(20),cost int unsigned);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc book;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| bookid   | int unsigned | YES  |     | NULL    |       |
+| bookname | varchar(20)  | YES  |     | NULL    |       |
+| cost     | int unsigned | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into book values(1,'life',300);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into book values(2,'null',300);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from book;
++--------+----------+------+
+| bookid | bookname | cost |
++--------+----------+------+
+|      1 | life     |  300 |
+|      2 | null     |  300 |
++--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> ^A^C
+mysql>
+
+
+
+
+
+1-04-2026
+
+
+Microsoft Windows [Version 10.0.26200.8039]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 25
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sample_data        |
+| sys                |
++--------------------+
+6 rows in set (0.05 sec)
+
+mysql> use sample_data;
+Database changed
+mysql> show tables;
++-----------------------+
+| Tables_in_sample_data |
++-----------------------+
+| book                  |
+| book1                 |
+| college_info          |
+| emp_info              |
+| employee              |
+| subject               |
++-----------------------+
+6 rows in set (0.02 sec)
+
+mysql> create table item(itemid int unsigned not null,itemname varchar(30) not null);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> desc item;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| itemid   | int unsigned | NO   |     | NULL    |       |
+| itemname | varchar(30)  | NO   |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> insert into item values(1,'phone'),(2,null);
+ERROR 1048 (23000): Column 'itemname' cannot be null
+mysql> insert into item(itemid) values(1);
+ERROR 1364 (HY000): Field 'itemname' doesn't have a default value
+mysql> create table item(itemid int unsigned not null default 100,
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 2
+mysql> dropt table item;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dropt table item' at line 1
+mysql> create table item(itemid int unsigned not null default 100);
+ERROR 1050 (42S01): Table 'item' already exists
+mysql> dropt table item;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dropt table item' at line 1
+mysql> drop table item;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> create table item(itemid int unsigned not numm default 100,
+    -> itemname varchar(30) not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'numm default 100,
+itemname varchar(30) not null)' at line 1
+mysql> create table item(itemid int unsigned not null default 100,
+    -> itemname varchar(30) not null);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc item;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| itemid   | int unsigned | NO   |     | 100     |       |
+| itemname | varchar(30)  | NO   |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+2 rows in set (0.04 sec)
+
+mysql> insert into item(itemname) value('phone');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from item;
++--------+----------+
+| itemid | itemname |
++--------+----------+
+|    100 | phone    |
++--------+----------+
+1 row in set (0.00 sec)
+
+mysql> insert into item(itemname) value("'watch');
+    "> insert into item(itemname) value('watch');
+    "> );
+    ">
+    "> drop table item;
+    "> insert into item(itemname) value('watch');
+    "> insert into item(itemname) value('watch');;
+    ">
+    ">
+    ">
+    "> mysql --vesrion
+    "> mysql --vesrion
+    "> drop
+    "> desc item;
+    "> "
+    -> insert into item (itemname) value('watch');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into item (itemname) value('watch')' at line 16
+mysql> insert into item(itemname value('watch');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'value('watch')' at line 1
+mysql> insert into item(itemname) value('watch');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from item;
++--------+----------+
+| itemid | itemname |
++--------+----------+
+|    100 | phone    |
+|    100 | watch    |
++--------+----------+
+2 rows in set (0.00 sec)
+
+mysql> drop table item;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table item(itemid int unsigned primary key,
+    -> itemname varchar(30) unique not null,
+    -> item_mfd date not null);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc item;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| itemid   | int unsigned | NO   | PRI | NULL    |       |
+| itemname | varchar(30)  | NO   | UNI | NULL    |       |
+| item_mfd | date         | NO   |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> insert into item values(1,'phone','2025-09-23');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into item values(1,'watch','2025-09-23');
+ERROR 1062 (23000): Duplicate entry '1' for key 'item.PRIMARY'
+mysql> insert into item values(null,'watch','2025-09-23');
+ERROR 1048 (23000): Column 'itemid' cannot be null
+mysql> dropt table item;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dropt table item' at line 1
+mysql> drop table item;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table item(itemid int unsigned primary key auto_increment,
+    -> itemname varchar(30) unique key not null,
+    -> item_mfd date not null);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc item;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| itemid   | int unsigned | NO   | PRI | NULL    | auto_increment |
+| itemname | varchar(30)  | NO   | UNI | NULL    |                |
+| item_mfd | date         | NO   |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into item(itemname,item_mfd) values('watch','2025-09-23');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from item;
++--------+----------+------------+
+| itemid | itemname | item_mfd   |
++--------+----------+------------+
+|      1 | watch    | 2025-09-23 |
++--------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> insert into item(itemname,item_mfd) values('watch','2025-09-23');
+ERROR 1062 (23000): Duplicate entry 'watch' for key 'item.itemname'
+mysql> insert into item(itemname,item_mfd) values('shoes','2025-09-23');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from item;
++--------+----------+------------+
+| itemid | itemname | item_mfd   |
++--------+----------+------------+
+|      1 | watch    | 2025-09-23 |
+|      3 | shoes    | 2025-09-23 |
++--------+----------+------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into item(itemname,item_mfd) values('mouse','2025-09-23');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from item;
++--------+----------+------------+
+| itemid | itemname | item_mfd   |
++--------+----------+------------+
+|      1 | watch    | 2025-09-23 |
+|      3 | shoes    | 2025-09-23 |
+|      4 | mouse    | 2025-09-23 |
++--------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into item(itemname,item_mfd) values(7,''laptop','2025-09-23');
+    '> insert into item(itemname,item_mfd) values(7,'laptop','2025-09-23');
+    '> '
+    -> insert into item(itemname,item_mfd) values(7,'laptop','2025-09-23');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'laptop','2025-09-23');
+insert into item(itemname,item_mfd) values(7,'laptop','20' at line 1
+mysql> insert into item(itemname,item_mfd) values('laptop','2-25-09-23');
+ERROR 1292 (22007): Incorrect date value: '2-25-09-23' for column 'item_mfd' at row 1
+mysql> insert into item(itemname,item_mfd) values('laptop','2025-09-23');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from item;
++--------+----------+------------+
+| itemid | itemname | item_mfd   |
++--------+----------+------------+
+|      1 | watch    | 2025-09-23 |
+|      3 | shoes    | 2025-09-23 |
+|      4 | mouse    | 2025-09-23 |
+|      5 | laptop   | 2025-09-23 |
++--------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> create table person(age tinyint, check(age>18));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc person;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| age   | tinyint | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> show create table person;
++--------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                                                                              |
++--------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| person | CREATE TABLE `person` (
+  `age` tinyint DEFAULT NULL,
+  CONSTRAINT `person_chk_1` CHECK ((`age` > 18))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into person values(8);
+ERROR 3819 (HY000): Check constraint 'person_chk_1' is violated.
+mysql> insert into person values(88);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from person;
++------+
+| age  |
++------+
+|   88 |
++------+
+1 row in set (0.00 sec)
+
+mysql> desc person;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| age   | tinyint | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql>
+
+
+
+--------------03-04-2026--------------
+
+
+Microsoft Windows [Version 10.0.26200.8039]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 28
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sample_data        |
+| sys                |
++--------------------+
+6 rows in set (0.07 sec)
+
+mysql> use sample_data;
+Database changed
+mysql> create database relation_info;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> use relation_info;
+Database changed
+mysql> create table user(userid int unsigned primary key,username varchar(30),password varchar(30));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc user;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| userid   | int unsigned | NO   | PRI | NULL    |       |
+| username | varchar(30)  | YES  |     | NULL    |       |
+| password | varchar(30)  | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> create table profile(profileid int unsigned primary key,
+    -> about tinytext,
+    -> dp_img blob,
+    -> foreign key(profileid) reference user(userid));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference user(userid))' at line 4
+mysql> create table profile(profileid int unsigned primary key,
+    -> about tinytext,
+    -> dp_img blob,
+    -> foreign key(profileid) references user(userid));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc profile;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| profileid | int unsigned | NO   | PRI | NULL    |       |
+| about     | tinytext     | YES  |     | NULL    |       |
+| dp_img    | blob         | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> desc user;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| userid   | int unsigned | NO   | PRI | NULL    |       |
+| username | varchar(30)  | YES  |     | NULL    |       |
+| password | varchar(30)  | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into user values(1,'sam','sam@123'),(2,'ram','ram@123'));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> insert into user values(1,'sam','sam@123'),(2,'ram','ram@123');
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into prifile values(1,'waste of time','C:\Users\bobba\Desktop\pfs-vij-27');
+ERROR 1146 (42S02): Table 'relation_info.prifile' doesn't exist
+mysql> insert into profile(1,'waste of time','C:\Users\bobba\Desktop\pfs-vij-27');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1,'waste of time','C:\Users\bobba\Desktop\pfs-vij-27')' at line 1
+mysql> insert into profime values(1,'waste of time','C:\Users\bobba\Desktop\pfs-vij-27');
+ERROR 1146 (42S02): Table 'relation_info.profime' doesn't exist
+mysql> insert into profile values(1,'waste of time','C:\Users\bobba\Desktop\pfs-vij-27');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into profile values(1,'time make scence','C:\Users\bobba\Desktop\pfs-vij-27\mysql');
+ERROR 1062 (23000): Duplicate entry '1' for key 'profile.PRIMARY'
+mysql> insert into profile values(2,'time make scence','C:\Users\bobba\Desktop\pfs-vij-27\mysql');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from user;
++--------+----------+----------+
+| userid | username | password |
++--------+----------+----------+
+|      1 | sam      | sam@123  |
+|      2 | ram      | ram@123  |
++--------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from profile;
++-----------+------------------+------------------------------------------------------------------------+
+| profileid | about            | dp_img                                                                 |
++-----------+------------------+------------------------------------------------------------------------+
+|         1 | waste of time    | 0x433A5573657273086F6262614465736B746F707066732D76696A2D3237           |
+|         2 | time make scence | 0x433A5573657273086F6262614465736B746F707066732D76696A2D32376D7973716C |
++-----------+------------------+------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> create table customers(customerid int unsigned primary key,
+    -> customername varchar(30));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table orders(orderid int unsigned primary key,customerid int unsigned,
+    -> foreign key(customerid) references customers(customerid));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into customers values((101,'jhon'),(102,'william');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> insert into customers values((101,'jhon'),(102,'william');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> insert into customers values((101,'jhon'),(102,'william');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> insert into customers values(101,'jhon'),(102,'william');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into orders values(1,101),(2,102);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++------------+--------------+
+| customerid | customername |
++------------+--------------+
+|        101 | jhon         |
+|        102 | william      |
++------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from orders;
++---------+------------+
+| orderid | customerid |
++---------+------------+
+|       1 |        101 |
+|       2 |        102 |
++---------+------------+
+2 rows in set (0.00 sec)
+
+mysql> create table student(studentid int unsigned primary key,studentname varchar(30));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table course(courseid int unsigned primary key,
+    -> coursename varchar(30),cost bigint);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table enrollement(enrollid int unsigned primary key,
+    -> studentid int unsigned,
+    -> courseid int unsigned,
+    -> foreign key(studentid) references student(studentid);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 4
+mysql> create table enrollement(enrollid int unsigned primary key,
+    -> studentid int unsigned,
+    -> courseid int unsigned,
+    -> foreign key(studentid) references student(studentid));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into student values(1,'lakshmi'),(2,'bhanu'),(3,'sudha');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into course values(101,'python'),(102,'mysql');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into course values(101,'python',8000),(102,'mysql',5000);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-----------+-------------+
+| studentid | studentname |
++-----------+-------------+
+|         1 | lakshmi     |
+|         2 | bhanu       |
+|         3 | sudha       |
++-----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from course;
++----------+------------+------+
+| courseid | coursename | cost |
++----------+------------+------+
+|      101 | python     | 8000 |
+|      102 | mysql      | 5000 |
++----------+------------+------+
+2 rows in set (0.00 sec)
