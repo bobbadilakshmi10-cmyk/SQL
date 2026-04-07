@@ -1979,6 +1979,641 @@ mysql> select f_name from faculty where f_name like '_a%';
 mysql>
 
 
+-------------------07-04-2026--------------------------
 
+
+
+Microsoft Windows [Version 10.0.26200.8117]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 12
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| relation_info      |
+| sample_data        |
+| sys                |
++--------------------+
+8 rows in set (0.10 sec)
+
+mysql> use extra_data;
+Database changed
+mysql> select 3 & 2;
++-------+
+| 3 & 2 |
++-------+
+|     2 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select 3 | 2;
++-------+
+| 3 | 2 |
++-------+
+|     3 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> 3 ^ 2
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '3 ^ 2' at line 1
+mysql> select 3 ^2;
++------+
+| 3 ^2 |
++------+
+|    1 |
++------+
+1 row in set (0.00 sec)
+
+mysql> select ~1;
++----------------------+
+| ~1                   |
++----------------------+
+| 18446744073709551614 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> select 4 >> 1;
++--------+
+| 4 >> 1 |
++--------+
+|      2 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select 4 >> 2;
++--------+
+| 4 >> 2 |
++--------+
+|      1 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select 4 << 2;
++--------+
+| 4 << 2 |
++--------+
+|     16 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select concat('code','gnan');
++-----------------------+
+| concat('code','gnan') |
++-----------------------+
+| codegnan              |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> select concat('anusha','is','a','mentor');
++------------------------------------+
+| concat('anusha','is','a','mentor') |
++------------------------------------+
+| anushaisamentor                    |
++------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select concat('lakshmi',' ','is','a','trainee');
++------------------------------------------+
+| concat('lakshmi',' ','is','a','trainee') |
++------------------------------------------+
+| lakshmi isatrainee                       |
++------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select concat('lakshmi',' ','is','null','a','trainee');
++-------------------------------------------------+
+| concat('lakshmi',' ','is','null','a','trainee') |
++-------------------------------------------------+
+| lakshmi isnullatrainee                          |
++-------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select concat('lakshmi',' ','is',null,'a','trainee');
++-----------------------------------------------+
+| concat('lakshmi',' ','is',null,'a','trainee') |
++-----------------------------------------------+
+| NULL                                          |
++-----------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> -- fetch faculty_name and salary in column;
+mysql> select contact(f_name,' ',salary) from faculty;
+ERROR 1305 (42000): FUNCTION extra_data.contact does not exist
+mysql> select concat(f_name,' ',salary) from faculty;
++---------------------------+
+| concat(f_name,' ',salary) |
++---------------------------+
+| anusha 50000              |
+| sam 50000                 |
+| ram 45000                 |
+| ali 30000                 |
+| ravi 80000                |
+| jhon 45000                |
+| ram 25000                 |
+| smith 60000               |
+| william 33000             |
++---------------------------+
+9 rows in set (0.00 sec)
+
+mysql> select concat_ws(','',','anusha','mentor');
++-------------------------------------+
+| concat_ws(','',','anusha','mentor') |
++-------------------------------------+
+| anusha,',mentor                     |
++-------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select concat_ws(','',','anusha',null,'mentor');
++------------------------------------------+
+| concat_ws(','',','anusha',null,'mentor') |
++------------------------------------------+
+| anusha,',mentor                          |
++------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select substr('codetantra',1,4);
++--------------------------+
+| substr('codetantra',1,4) |
++--------------------------+
+| code                     |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> select substr('codetantra',3,4);
++--------------------------+
+| substr('codetantra',3,4) |
++--------------------------+
+| deta                     |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> select substr('codetantra',-3,3);
++---------------------------+
+| substr('codetantra',-3,3) |
++---------------------------+
+| tra                       |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> select substr('2020-08-20',1,4);
++--------------------------+
+| substr('2020-08-20',1,4) |
++--------------------------+
+| 2020                     |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> -- fetch f_name,doj who joined after 2020 year;
+mysql> select f_name doj from faculty wher substr(doj,1,4)>'2020';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'substr(doj,1,4)>'2020'' at line 1
+mysql> select f_name,doj from faculty where substr(doj,1,4)>'2020';
++---------+------------+
+| f_name  | doj        |
++---------+------------+
+| anusha  | 2022-11-02 |
+| sam     | 2025-09-02 |
+| ram     | 2025-09-02 |
+| ali     | 2022-03-01 |
+| ram     | 2025-09-02 |
+| smith   | 2021-07-20 |
+| william | 2026-03-02 |
++---------+------------+
+7 rows in set (0.00 sec)
+
+mysql> -- fetch f_name from faculty where f_name ends with 'am';
+mysql> select f_name from faculty where substr(f_name,2)='am';
++--------+
+| f_name |
++--------+
+| sam    |
+| ram    |
+| ram    |
++--------+
+3 rows in set (0.00 sec)
+
+mysql> select f_name from faculty where substr(f_name,-2)='am';
++---------+
+| f_name  |
++---------+
+| sam     |
+| ram     |
+| ram     |
+| william |
++---------+
+4 rows in set (0.00 sec)
+
+mysql> select substring('code',1,2);
++-----------------------+
+| substring('code',1,2) |
++-----------------------+
+| co                    |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> select substring('code' from 1 for 2);
++--------------------------------+
+| substring('code' from 1 for 2) |
++--------------------------------+
+| co                             |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select insert('codegnan',5,2,'tantra');
++---------------------------------+
+| insert('codegnan',5,2,'tantra') |
++---------------------------------+
+| codetantraan                    |
++---------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select insert('codegnan',5,4,'tantra');
++---------------------------------+
+| insert('codegnan',5,4,'tantra') |
++---------------------------------+
+| codetantra                      |
++---------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select insert('codegnan',5,0,'tantra');
++---------------------------------+
+| insert('codegnan',5,0,'tantra') |
++---------------------------------+
+| codetantragnan                  |
++---------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select insert('codegnan',5,0,' tantra');
++----------------------------------+
+| insert('codegnan',5,0,' tantra') |
++----------------------------------+
+| code tantragnan                  |
++----------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select reverse('lakshmi');
++--------------------+
+| reverse('lakshmi') |
++--------------------+
+| imhskal            |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select replace('i am lakshmi i am from vijayawada is strong city','vijayawada','vij');
++--------------------------------------------------------------------------------+
+| replace('i am lakshmi i am from vijayawada is strong city','vijayawada','vij') |
++--------------------------------------------------------------------------------+
+| i am lakshmi i am from vij is strong city                                      |
++--------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select replace(221,'1',0);
++--------------------+
+| replace(221,'1',0) |
++--------------------+
+| 220                |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select length('lakshmi');
++-------------------+
+| length('lakshmi') |
++-------------------+
+|                 7 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from faculty;
++------+---------+--------+------------+---------+-------------------+
+| f_id | f_name  | salary | doj        | dept_id | email_id          |
++------+---------+--------+------------+---------+-------------------+
+|  101 | anusha  |  50000 | 2022-11-02 |       1 | anusha@gmail.com  |
+|  102 | sam     |  50000 | 2025-09-02 |       1 | sam@gmail.com     |
+|  103 | ram     |  45000 | 2025-09-02 |       2 | ram@gmail.com     |
+|  104 | ali     |  30000 | 2022-03-01 |       3 | ali@gmail.com     |
+|  105 | ravi    |  80000 | 2018-03-01 |       3 | ravi@gmail.com    |
+|  106 | jhon    |  45000 | 2020-06-01 |       3 | jhon@gmail.com    |
+|  107 | ram     |  25000 | 2025-09-02 |       4 | ram@gmail.com     |
+|  108 | smith   |  60000 | 2021-07-20 |       4 | smith@gmail.com   |
+|  109 | william |  33000 | 2026-03-02 |    NULL | william@gmail.com |
++------+---------+--------+------------+---------+-------------------+
+9 rows in set (0.00 sec)
+
+mysql> -- fetch a column with f_name along with doj year and length of the f_name;
+mysql> select concat(f_name,substr(doj,1,4),length(f_name)) as emp_info from faculty;
++--------------+
+| emp_info     |
++--------------+
+| anusha20226  |
+| sam20253     |
+| ram20253     |
+| ali20223     |
+| ravi20184    |
+| jhon20204    |
+| ram20253     |
+| smith20215   |
+| william20267 |
++--------------+
+9 rows in set (0.01 sec)
+
+mysql> select concat(' '.f_name,substr(doj,1,4),length(f_name)) as emp_info from faculty;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.f_name,substr(doj,1,4),length(f_name)) as emp_info from faculty' at line 1
+mysql> select concat(' ',f_name,substr(doj,1,4),length(f_name)) as emp_info from faculty;
++---------------+
+| emp_info      |
++---------------+
+|  anusha20226  |
+|  sam20253     |
+|  ram20253     |
+|  ali20223     |
+|  ravi20184    |
+|  jhon20204    |
+|  ram20253     |
+|  smith20215   |
+|  william20267 |
++---------------+
+9 rows in set (0.00 sec)
+
+mysql> select trim('           lakshmi      ');
++----------------------------------+
+| trim('           lakshmi      ') |
++----------------------------------+
+| lakshmi                          |
++----------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select trim('           code with gnan      ');
++-----------------------------------------+
+| trim('           code with gnan      ') |
++-----------------------------------------+
+| code with gnan                          |
++-----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select trim(both '%' from '%%%%%%%%%%code with clam%%%%%%%%%%%%%');
++-------------------------------------------------------------+
+| trim(both '%' from '%%%%%%%%%%code with clam%%%%%%%%%%%%%') |
++-------------------------------------------------------------+
+| code with clam                                              |
++-------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select trim(leading '%' from '%%%%%code with clam%%%%%%%');
++-----------------------------------------------------+
+| trim(leading '%' from '%%%%%code with clam%%%%%%%') |
++-----------------------------------------------------+
+| code with clam%%%%%%%                               |
++-----------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select trim(trailing '%' from '%%%%%%%%code with clam%%%%%%%%%%%%%%');
++----------------------------------------------------------------+
+| trim(trailing '%' from '%%%%%%%%code with clam%%%%%%%%%%%%%%') |
++----------------------------------------------------------------+
+| %%%%%%%%code with clam                                         |
++----------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select pow(2,3);
++----------+
+| pow(2,3) |
++----------+
+|        8 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> select ceiling(5.34);
++---------------+
+| ceiling(5.34) |
++---------------+
+|             6 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select floor(5.34);
++-------------+
+| floor(5.34) |
++-------------+
+|           5 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select round(4.555);
++--------------+
+| round(4.555) |
++--------------+
+|            5 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select round(4.3);
++------------+
+| round(4.3) |
++------------+
+|          4 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select round(4.567,1);
++----------------+
+| round(4.567,1) |
++----------------+
+|            4.6 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select round(4.567,2);
++----------------+
+| round(4.567,2) |
++----------------+
+|           4.57 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select round(14.5678,-1);
++-------------------+
+| round(14.5678,-1) |
++-------------------+
+|                10 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select round(9.5678,-1);
++------------------+
+| round(9.5678,-1) |
++------------------+
+|               10 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select year(doj) from faculty;
++-----------+
+| year(doj) |
++-----------+
+|      2022 |
+|      2025 |
+|      2025 |
+|      2022 |
+|      2018 |
+|      2020 |
+|      2025 |
+|      2021 |
+|      2026 |
++-----------+
+9 rows in set (0.00 sec)
+
+mysql> select month(doj) from faculty;
++------------+
+| month(doj) |
++------------+
+|         11 |
+|          9 |
+|          9 |
+|          3 |
+|          3 |
+|          6 |
+|          9 |
+|          7 |
+|          3 |
++------------+
+9 rows in set (0.00 sec)
+
+mysql> select day(doj) from faculty;
++----------+
+| day(doj) |
++----------+
+|        2 |
+|        2 |
+|        2 |
+|        1 |
+|        1 |
+|        1 |
+|        2 |
+|       20 |
+|        2 |
++----------+
+9 rows in set (0.00 sec)
+
+mysql> select dayname(doj) from faculty;
++--------------+
+| dayname(doj) |
++--------------+
+| Wednesday    |
+| Tuesday      |
+| Tuesday      |
+| Tuesday      |
+| Thursday     |
+| Monday       |
+| Tuesday      |
+| Tuesday      |
+| Monday       |
++--------------+
+9 rows in set (0.02 sec)
+
+mysql> select monthname(doj) from faculty;
++----------------+
+| monthname(doj) |
++----------------+
+| November       |
+| September      |
+| September      |
+| March          |
+| March          |
+| June           |
+| September      |
+| July           |
+| March          |
++----------------+
+9 rows in set (0.00 sec)
+
+mysql> select weekofyear('2026-04-07');
++--------------------------+
+| weekofyear('2026-04-07') |
++--------------------------+
+|                       15 |
++--------------------------+
+1 row in set (0.00 sec)
+
+mysql> select datediff('2026-04-07','2026-03-25');
++-------------------------------------+
+| datediff('2026-04-07','2026-03-25') |
++-------------------------------------+
+|                                  13 |
++-------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_add('2026-04-07',interval 50 days);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'days)' at line 1
+mysql> select date_add('2026-04-07',interval 50 day);
++----------------------------------------+
+| date_add('2026-04-07',interval 50 day) |
++----------------------------------------+
+| 2026-05-27                             |
++----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_add('2026-04-07',interval 10 year);
++-----------------------------------------+
+| date_add('2026-04-07',interval 10 year) |
++-----------------------------------------+
+| 2036-04-07                              |
++-----------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2026-04-07 12:17:26 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select current_timestamp();
++---------------------+
+| current_timestamp() |
++---------------------+
+| 2026-04-07 12:19:01 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> create table dummy(id int unsigned,regtime datetime default now());
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> insert into dummy(id) value(1);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from dummy;
++------+---------------------+
+| id   | regtime             |
++------+---------------------+
+|    1 | 2026-04-07 12:20:43 |
++------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> ^A^C
+mysql> ^C
+mysql>
 
 
