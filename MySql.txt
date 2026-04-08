@@ -2617,3 +2617,314 @@ mysql> ^C
 mysql>
 
 
+
+---------------------08-04-2026------------------------
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8117]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| relation_info      |
+| sample_data        |
+| sys                |
++--------------------+
+8 rows in set (0.04 sec)
+
+mysql> use extra_data;
+Database changed
+mysql> select * from faculty;
++------+---------+--------+------------+---------+-------------------+
+| f_id | f_name  | salary | doj        | dept_id | email_id          |
++------+---------+--------+------------+---------+-------------------+
+|  101 | anusha  |  50000 | 2022-11-02 |       1 | anusha@gmail.com  |
+|  102 | sam     |  50000 | 2025-09-02 |       1 | sam@gmail.com     |
+|  103 | ram     |  45000 | 2025-09-02 |       2 | ram@gmail.com     |
+|  104 | ali     |  30000 | 2022-03-01 |       3 | ali@gmail.com     |
+|  105 | ravi    |  80000 | 2018-03-01 |       3 | ravi@gmail.com    |
+|  106 | jhon    |  45000 | 2020-06-01 |       3 | jhon@gmail.com    |
+|  107 | ram     |  25000 | 2025-09-02 |       4 | ram@gmail.com     |
+|  108 | smith   |  60000 | 2021-07-20 |       4 | smith@gmail.com   |
+|  109 | william |  33000 | 2026-03-02 |    NULL | william@gmail.com |
++------+---------+--------+------------+---------+-------------------+
+9 rows in set (0.01 sec)
+
+mysql> select sum(salary) from faculty;
++-------------+
+| sum(salary) |
++-------------+
+|      418000 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select count(salary) from faculty;
++---------------+
+| count(salary) |
++---------------+
+|             9 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary) from faculty;
++-------------+
+| max(salary) |
++-------------+
+|       80000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(f_id) from faculty wher salary=50000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'salary=50000' at line 1
+mysql> select count(f_id) from faculty where salary=50000;
++-------------+
+| count(f_id) |
++-------------+
+|           2 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> -- fetch count of employees from each dept;
+mysql> select count(f_id) dept_id from faculty group by dept_id;
++---------+
+| dept_id |
++---------+
+|       1 |
+|       2 |
+|       1 |
+|       3 |
+|       2 |
++---------+
+5 rows in set, 1 warning (0.00 sec)
+
+mysql> select count(f_id), dept_id from faculty group by dept_id;
++-------------+---------+
+| count(f_id) | dept_id |
++-------------+---------+
+|           1 |    NULL |
+|           2 |       1 |
+|           1 |       2 |
+|           3 |       3 |
+|           2 |       4 |
++-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> --fetch sum of salaries from each dept;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--fetch sum of salaries from each dept' at line 1
+mysql> -- fetch sum of salaries from each dept;
+mysql> select sum(salary) from group by dept_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'group by dept_id' at line 1
+mysql> select sum(salary) from faculty group by dept_id;
++-------------+
+| sum(salary) |
++-------------+
+|       33000 |
+|      100000 |
+|       45000 |
+|      155000 |
+|       85000 |
++-------------+
+5 rows in set (0.02 sec)
+
+mysql> select * from customers;
++------------+---------+------+-------------+
+| CustomerID | Name    | Age  | City        |
++------------+---------+------+-------------+
+|          1 | Alice   |   30 | New York    |
+|          2 | Bob     |   25 | Los Angeles |
+|          3 | Charlie |   35 | Chicago     |
+|          4 | David   |   40 | Houston     |
+|          5 | jhon    |   35 | New York    |
++------------+---------+------+-------------+
+5 rows in set (0.05 sec)
+
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
++---------+------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> -- fetch count of orders by each customers;
+mysql> select count(OrderId) from orders group by customer_id;
+ERROR 1054 (42S22): Unknown column 'customer_id' in 'group statement'
+mysql> select count(OrderId) from orders group by customerid;
++----------------+
+| count(OrderId) |
++----------------+
+|              3 |
+|              1 |
+|              1 |
+|              1 |
++----------------+
+4 rows in set (0.00 sec)
+
+mysql> select count(OrderId),customerid from orders group by customerid;
++----------------+------------+
+| count(OrderId) | customerid |
++----------------+------------+
+|              3 |          1 |
+|              1 |          2 |
+|              1 |          3 |
+|              1 |          4 |
++----------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> --fetch max(salary);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--fetch max(salary)' at line 1
+mysql> -- fetch max(salary);
+mysql> select max(salary) from faculty;
++-------------+
+| max(salary) |
++-------------+
+|       80000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary),f_name from faculty group by f_name;
++-------------+---------+
+| max(salary) | f_name  |
++-------------+---------+
+|       50000 | anusha  |
+|       50000 | sam     |
+|       45000 | ram     |
+|       30000 | ali     |
+|       80000 | ravi    |
+|       45000 | jhon    |
+|       60000 | smith   |
+|       33000 | william |
++-------------+---------+
+8 rows in set (0.01 sec)
+
+mysql> select salary,f_name from faculty order by salary;
++--------+---------+
+| salary | f_name  |
++--------+---------+
+|  25000 | ram     |
+|  30000 | ali     |
+|  33000 | william |
+|  45000 | ram     |
+|  45000 | jhon    |
+|  50000 | anusha  |
+|  50000 | sam     |
+|  60000 | smith   |
+|  80000 | ravi    |
++--------+---------+
+9 rows in set (0.00 sec)
+
+mysql> select salary,f_name from faculty order by salary desc;
++--------+---------+
+| salary | f_name  |
++--------+---------+
+|  80000 | ravi    |
+|  60000 | smith   |
+|  50000 | anusha  |
+|  50000 | sam     |
+|  45000 | ram     |
+|  45000 | jhon    |
+|  33000 | william |
+|  30000 | ali     |
+|  25000 | ram     |
++--------+---------+
+9 rows in set (0.00 sec)
+
+mysql> select salary,f_name from faculty order by salary desc limit 1;;
++--------+--------+
+| salary | f_name |
++--------+--------+
+|  80000 | ravi   |
++--------+--------+
+1 row in set (0.00 sec)
+
+ERROR:
+No query specified
+
+mysql> -- fetch dept_id,count of employee consist of more than 2 employees;
+mysql> select dept_id, count(f_id) from faculty grpup by dept_id having count(f_id) >2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'by dept_id having count(f_id) >2' at line 1
+mysql> select dept_id,count(f_id) from faculty grpup by dept_id having count(f_id) >2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'by dept_id having count(f_id) >2' at line 1
+mysql> select dept_id,count(f_id) from faculty group by dept_id having count(f_id) >2;
++---------+-------------+
+| dept_id | count(f_id) |
++---------+-------------+
+|       3 |           3 |
++---------+-------------+
+1 row in set (0.03 sec)
+
+mysql> -- fetch customerid,count(orderid) who ordered more than 2 times;
+mysql> select customerid,count(orderid) from orders group by customerid having count(orderid)>2;
++------------+----------------+
+| customerid | count(orderid) |
++------------+----------------+
+|          1 |              3 |
++------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> -- fetch count(f_id),doj joined at for each doj;
+mysql> slect count(f_id),doj from faculty group by doj;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'slect count(f_id),doj from faculty group by doj' at line 1
+mysql> select count(f_id),doj from faculty group by doj;
++-------------+------------+
+| count(f_id) | doj        |
++-------------+------------+
+|           1 | 2022-11-02 |
+|           3 | 2025-09-02 |
+|           1 | 2022-03-01 |
+|           1 | 2018-03-01 |
+|           1 | 2020-06-01 |
+|           1 | 2021-07-20 |
+|           1 | 2026-03-02 |
++-------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> -- fetch productid,count(orderid) placed from each product;
+mysql> select * from productid;
+ERROR 1146 (42S02): Table 'extra_data.productid' doesn't exist
+mysql> select productid,count(orderid) as placed from orders group by productid;
+ERROR 1054 (42S22): Unknown column 'productid' in 'field list'
+mysql> select productid,count(orderid) as placed from order_details group by productid;
++-----------+--------+
+| productid | placed |
++-----------+--------+
+|       101 |      1 |
+|       102 |      1 |
+|       103 |      1 |
+|       104 |      2 |
+|       105 |      1 |
++-----------+--------+
+5 rows in set (0.01 sec)
+
+mysql>
+
+
