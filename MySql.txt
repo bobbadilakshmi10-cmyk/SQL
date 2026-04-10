@@ -11498,3 +11498,803 @@ mysql> select name,population from country where continent='asia' and population
 mysql>
 
 
+
+
+
+--------------------10-04-2026---------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8117]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 17
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| relation_info      |
+| sample_data        |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.01 sec)
+
+mysql> use extra_data;
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_extra_data |
++----------------------+
+| customers            |
+| dept                 |
+| dummy                |
+| faculty              |
+| order_details        |
+| orders               |
+| product              |
++----------------------+
+7 rows in set (0.01 sec)
+
+mysql> desc customers;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| CustomerID | int         | NO   | PRI | NULL    |       |
+| Name       | varchar(50) | YES  |     | NULL    |       |
+| Age        | int         | YES  |     | NULL    |       |
+| City       | varchar(50) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc orders;
++------------+------+------+-----+---------+-------+
+| Field      | Type | Null | Key | Default | Extra |
++------------+------+------+-----+---------+-------+
+| OrderID    | int  | NO   | PRI | NULL    |       |
+| CustomerID | int  | YES  | MUL | NULL    |       |
+| OrderDate  | date | YES  |     | NULL    |       |
++------------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc order_details;
++---------------+------+------+-----+---------+-------+
+| Field         | Type | Null | Key | Default | Extra |
++---------------+------+------+-----+---------+-------+
+| OrderDetailID | int  | NO   | PRI | NULL    |       |
+| OrderID       | int  | YES  | MUL | NULL    |       |
+| ProductID     | int  | YES  | MUL | NULL    |       |
+| Quantity      | int  | YES  |     | NULL    |       |
++---------------+------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql>  -- fetch the product names which are ordered;
+mysql> select * from order_details;
++---------------+---------+-----------+----------+
+| OrderDetailID | OrderID | ProductID | Quantity |
++---------------+---------+-----------+----------+
+|             1 |       1 |       101 |        2 |
+|             2 |       2 |       102 |        1 |
+|             3 |       3 |       104 |        3 |
+|             4 |       4 |       103 |        1 |
+|             5 |       5 |       105 |        2 |
+|             6 |       6 |       104 |        3 |
++---------------+---------+-----------+----------+
+6 rows in set (0.01 sec)
+
+mysql> select * from products;
+ERROR 1146 (42S02): Table 'extra_data.products' doesn't exist
+mysql> select * from product;
++-----------+-------------+---------+
+| ProductID | ProductName | Price   |
++-----------+-------------+---------+
+|       101 | Phone       |  600.00 |
+|       102 | Laptop      | 1200.00 |
+|       103 | Tablet      |  800.00 |
+|       104 | Headphones  |  100.00 |
+|       105 | Monitor     |  500.00 |
++-----------+-------------+---------+
+5 rows in set (0.02 sec)
+
+mysql> select productname from product where productid in
+    -> (select productid from order_details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select productname from product where productid in
+    -> (select productid from order_details);
++-------------+
+| productname |
++-------------+
+| Phone       |
+| Laptop      |
+| Tablet      |
+| Headphones  |
+| Monitor     |
++-------------+
+5 rows in set (0.01 sec)
+
+mysql> -- fetch the product names which is not ordered
+mysql> select productname from product where productid not in
+    -> (select productid from order_details);
+Empty set (0.00 sec)
+
+mysql> -- fetch customer name who not ordered anything
+mysql> select name customer wher customerid not in
+    -> (select customerid from orders);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'wher customerid not in
+(select customerid from orders)' at line 1
+mysql> select name customers where customerid not in
+    -> (select customerid from orders);
+ERROR 1054 (42S22): Unknown column 'name' in 'field list'
+mysql> select name from customer where customerid not in
+    -> (select customerid from orders);
+ERROR 1146 (42S02): Table 'extra_data.customer' doesn't exist
+mysql> select name from customers where customerid not in
+    -> (select customerid from orders);
++------+
+| name |
++------+
+| jhon |
++------+
+1 row in set (0.00 sec)
+
+mysql> -- fetch the customer name who ordered more than 2 times;
+mysql> select name from customers wher customerid in
+    -> (select customerid from orders group by customerid having count(orderid)>2);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'customerid in
+(select customerid from orders group by customerid having count(or' at line 1
+mysql> select name from customers where customerid in
+    -> (select customerid from orders group by customerid having count(orderid)>2);
++-------+
+| name  |
++-------+
+| Alice |
++-------+
+1 row in set (0.01 sec)
+
+mysql> -- fetch the dept names which give salary>30000;
+mysql> select * from faculty;
++------+---------+--------+------------+---------+-------------------+
+| f_id | f_name  | salary | doj        | dept_id | email_id          |
++------+---------+--------+------------+---------+-------------------+
+|  101 | anusha  |  50000 | 2022-11-02 |       1 | anusha@gmail.com  |
+|  102 | sam     |  50000 | 2025-09-02 |       1 | sam@gmail.com     |
+|  103 | ram     |  45000 | 2025-09-02 |       2 | ram@gmail.com     |
+|  104 | ali     |  30000 | 2022-03-01 |       3 | ali@gmail.com     |
+|  105 | ravi    |  80000 | 2018-03-01 |       3 | ravi@gmail.com    |
+|  106 | jhon    |  45000 | 2020-06-01 |       3 | jhon@gmail.com    |
+|  107 | ram     |  25000 | 2025-09-02 |       4 | ram@gmail.com     |
+|  108 | smith   |  60000 | 2021-07-20 |       4 | smith@gmail.com   |
+|  109 | william |  33000 | 2026-03-02 |    NULL | william@gmail.com |
++------+---------+--------+------------+---------+-------------------+
+9 rows in set (0.01 sec)
+
+mysql> select d_name from dept wher d_id in
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'd_id in' at line 1
+mysql> select dept_name from dept where d_id in
+    -> (select dept_id from faculty where salary>300000);
+Empty set (0.00 sec)
+
+mysql> -- corelated sub queries
+mysql> select max(salary) from faculty;
++-------------+
+| max(salary) |
++-------------+
+|       80000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> -- fetch max of salary for each dept;
+mysql> select max(salary),dept_id from faculty group by dept_id;
++-------------+---------+
+| max(salary) | dept_id |
++-------------+---------+
+|       33000 |    NULL |
+|       50000 |       1 |
+|       45000 |       2 |
+|       80000 |       3 |
+|       60000 |       4 |
++-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> -- fetch emp name,salary who is taking maximum salary from each dept;
+mysql> select f_name,salary from faculty f1 where salary in
+    -> (select max(salary) from faculty f2 where f2.dept_id=f1.dept_id);
++--------+--------+
+| f_name | salary |
++--------+--------+
+| anusha |  50000 |
+| sam    |  50000 |
+| ram    |  45000 |
+| ravi   |  80000 |
+| smith  |  60000 |
++--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from oder_details;
+ERROR 1146 (42S02): Table 'extra_data.oder_details' doesn't exist
+mysql> select * from order_details;
++---------------+---------+-----------+----------+
+| OrderDetailID | OrderID | ProductID | Quantity |
++---------------+---------+-----------+----------+
+|             1 |       1 |       101 |        2 |
+|             2 |       2 |       102 |        1 |
+|             3 |       3 |       104 |        3 |
+|             4 |       4 |       103 |        1 |
+|             5 |       5 |       105 |        2 |
+|             6 |       6 |       104 |        3 |
++---------------+---------+-----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> -- fetch the order ids with maximum quantity for each product;
+mysql> select orderid from order_details od1 wher quantity in
+    -> (select max(quantity from order_details od2 wher od2.productid=od1.productid);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'wher quantity in
+(select max(quantity from order_details od2 wher od2.productid=' at line 1
+mysql> select orderid from order_details od1 where quantity in
+    -> (select max(quantity from order_details od2 wher od2.productid=od1.productid);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from order_details od2 wher od2.productid=od1.productid)' at line 2
+mysql> select orderid from order_details od1 wher quantity in
+    -> (select max(quantity) from order_details od2 wher od2.productid=od1.productid);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'wher quantity in
+(select max(quantity) from order_details od2 wher od2.productid' at line 1
+mysql> select orderid from order_details od1 where quantity in
+    -> (select max(quantity) from order_details od2 where od2.productid=od1.productid);
++---------+
+| orderid |
++---------+
+|       1 |
+|       2 |
+|       3 |
+|       4 |
+|       5 |
+|       6 |
++---------+
+6 rows in set (0.00 sec)
+
+mysql> use world;
+Database changed
+mysql> -- fetch city name which has highest population from each country;
+mysql> select c1.name,c1.countrycode from city c1.population
+    -> =
+    -> (select max(c2.population) from city c2 where c2.countrycode=c1.countrycode);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.population
+=
+(select max(c2.population) from city c2 where c2.countrycode=c1.co' at line 1
+mysql> select c1.name,c1.countrycode from city where c1.population
+    -> =
+    -> (select max(c2.population) from city c2 where c2.countrycode=c1.countrycode);
+ERROR 1054 (42S22): Unknown column 'c1.name' in 'field list'
+mysql> select c1.name,c1.countrycode from city c1 where c1.population
+    -> =
+    -> (select max(c2.population) from city c2 where c2.countrycode=c1.countrycode);
++-----------------------------------+-------------+
+| name                              | countrycode |
++-----------------------------------+-------------+
+| Kabul                             | AFG         |
+| Amsterdam                         | NLD         |
+| Willemstad                        | ANT         |
+| Tirana                            | ALB         |
+| Alger                             | DZA         |
+| Tafuna                            | ASM         |
+| Andorra la Vella                  | AND         |
+| Luanda                            | AGO         |
+| South Hill                        | AIA         |
+| Saint John´s                      | ATG         |
+| Dubai                             | ARE         |
+| Buenos Aires                      | ARG         |
+| Yerevan                           | ARM         |
+| Oranjestad                        | ABW         |
+| Sydney                            | AUS         |
+| Bakı                              | AZE         |
+| Nassau                            | BHS         |
+| al-Manama                         | BHR         |
+| Dhaka                             | BGD         |
+| Bridgetown                        | BRB         |
+| Antwerpen                         | BEL         |
+| Belize City                       | BLZ         |
+| Cotonou                           | BEN         |
+| Saint George                      | BMU         |
+| Thimphu                           | BTN         |
+| Santa Cruz de la Sierra           | BOL         |
+| Sarajevo                          | BIH         |
+| Gaborone                          | BWA         |
+| São Paulo                         | BRA         |
+| London                            | GBR         |
+| Road Town                         | VGB         |
+| Bandar Seri Begawan               | BRN         |
+| Sofija                            | BGR         |
+| Ouagadougou                       | BFA         |
+| Bujumbura                         | BDI         |
+| George Town                       | CYM         |
+| Santiago de Chile                 | CHL         |
+| Avarua                            | COK         |
+| San José                          | CRI         |
+| Djibouti                          | DJI         |
+| Roseau                            | DMA         |
+| Santo Domingo de Guzmán           | DOM         |
+| Guayaquil                         | ECU         |
+| Cairo                             | EGY         |
+| San Salvador                      | SLV         |
+| Asmara                            | ERI         |
+| Madrid                            | ESP         |
+| Cape Town                         | ZAF         |
+| Addis Abeba                       | ETH         |
+| Stanley                           | FLK         |
+| Suva                              | FJI         |
+| Quezon                            | PHL         |
+| Tórshavn                          | FRO         |
+| Libreville                        | GAB         |
+| Serekunda                         | GMB         |
+| Tbilisi                           | GEO         |
+| Accra                             | GHA         |
+| Gibraltar                         | GIB         |
+| Saint George´s                    | GRD         |
+| Nuuk                              | GRL         |
+| Les Abymes                        | GLP         |
+| Tamuning                          | GUM         |
+| Ciudad de Guatemala               | GTM         |
+| Conakry                           | GIN         |
+| Bissau                            | GNB         |
+| Georgetown                        | GUY         |
+| Port-au-Prince                    | HTI         |
+| Tegucigalpa                       | HND         |
+| Kowloon and New Kowloon           | HKG         |
+| Longyearbyen                      | SJM         |
+| Jakarta                           | IDN         |
+| Mumbai (Bombay)                   | IND         |
+| Baghdad                           | IRQ         |
+| Teheran                           | IRN         |
+| Dublin                            | IRL         |
+| Reykjavík                         | ISL         |
+| Jerusalem                         | ISR         |
+| Roma                              | ITA         |
+| Dili                              | TMP         |
+| Wien                              | AUT         |
+| Spanish Town                      | JAM         |
+| Tokyo                             | JPN         |
+| Sanaa                             | YEM         |
+| Amman                             | JOR         |
+| Flying Fish Cove                  | CXR         |
+| Beograd                           | YUG         |
+| Phnom Penh                        | KHM         |
+| Douala                            | CMR         |
+| Montréal                          | CAN         |
+| Praia                             | CPV         |
+| Almaty                            | KAZ         |
+| Nairobi                           | KEN         |
+| Bangui                            | CAF         |
+| Shanghai                          | CHN         |
+| Bishkek                           | KGZ         |
+| Bikenibeu                         | KIR         |
+| Santafé de Bogotá                 | COL         |
+| Moroni                            | COM         |
+| Brazzaville                       | COG         |
+| Kinshasa                          | COD         |
+| Bantam                            | CCK         |
+| Pyongyang                         | PRK         |
+| Seoul                             | KOR         |
+| Athenai                           | GRC         |
+| Zagreb                            | HRV         |
+| La Habana                         | CUB         |
+| al-Salimiya                       | KWT         |
+| Nicosia                           | CYP         |
+| Vientiane                         | LAO         |
+| Riga                              | LVA         |
+| Maseru                            | LSO         |
+| Beirut                            | LBN         |
+| Monrovia                          | LBR         |
+| Tripoli                           | LBY         |
+| Schaan                            | LIE         |
+| Vilnius                           | LTU         |
+| Luxembourg [Luxemburg/Lëtzebuerg] | LUX         |
+| El-Aaiún                          | ESH         |
+| Macao                             | MAC         |
+| Antananarivo                      | MDG         |
+| Skopje                            | MKD         |
+| Blantyre                          | MWI         |
+| Male                              | MDV         |
+| Kuala Lumpur                      | MYS         |
+| Bamako                            | MLI         |
+| Birkirkara                        | MLT         |
+| Casablanca                        | MAR         |
+| Dalap-Uliga-Darrit                | MHL         |
+| Fort-de-France                    | MTQ         |
+| Nouakchott                        | MRT         |
+| Port-Louis                        | MUS         |
+| Mamoutzou                         | MYT         |
+| Ciudad de México                  | MEX         |
+| Weno                              | FSM         |
+| Chisinau                          | MDA         |
+| Monte-Carlo                       | MCO         |
+| Ulan Bator                        | MNG         |
+| Plymouth                          | MSR         |
+| Maputo                            | MOZ         |
+| Rangoon (Yangon)                  | MMR         |
+| Windhoek                          | NAM         |
+| Yangor                            | NRU         |
+| Kathmandu                         | NPL         |
+| Managua                           | NIC         |
+| Niamey                            | NER         |
+| Lagos                             | NGA         |
+| Alofi                             | NIU         |
+| Kingston                          | NFK         |
+| Oslo                              | NOR         |
+| Abidjan                           | CIV         |
+| al-Sib                            | OMN         |
+| Karachi                           | PAK         |
+| Koror                             | PLW         |
+| Ciudad de Panamá                  | PAN         |
+| Port Moresby                      | PNG         |
+| Asunción                          | PRY         |
+| Lima                              | PER         |
+| Adamstown                         | PCN         |
+| Garapan                           | MNP         |
+| Lisboa                            | PRT         |
+| San Juan                          | PRI         |
+| Warszawa                          | POL         |
+| Malabo                            | GNQ         |
+| Doha                              | QAT         |
+| Paris                             | FRA         |
+| Cayenne                           | GUF         |
+| Faaa                              | PYF         |
+| Saint-Denis                       | REU         |
+| Bucuresti                         | ROM         |
+| Kigali                            | RWA         |
+| Stockholm                         | SWE         |
+| Jamestown                         | SHN         |
+| Basseterre                        | KNA         |
+| Castries                          | LCA         |
+| Kingstown                         | VCT         |
+| Saint-Pierre                      | SPM         |
+| Berlin                            | DEU         |
+| Honiara                           | SLB         |
+| Lusaka                            | ZMB         |
+| Apia                              | WSM         |
+| Serravalle                        | SMR         |
+| São Tomé                          | STP         |
+| Riyadh                            | SAU         |
+| Pikine                            | SEN         |
+| Victoria                          | SYC         |
+| Freetown                          | SLE         |
+| Singapore                         | SGP         |
+| Bratislava                        | SVK         |
+| Ljubljana                         | SVN         |
+| Mogadishu                         | SOM         |
+| Colombo                           | LKA         |
+| Omdurman                          | SDN         |
+| Helsinki [Helsingfors]            | FIN         |
+| Paramaribo                        | SUR         |
+| Mbabane                           | SWZ         |
+| Zürich                            | CHE         |
+| Damascus                          | SYR         |
+| Dushanbe                          | TJK         |
+| Taipei                            | TWN         |
+| Dar es Salaam                     | TZA         |
+| København                         | DNK         |
+| Bangkok                           | THA         |
+| Lomé                              | TGO         |
+| Fakaofo                           | TKL         |
+| Nuku´alofa                        | TON         |
+| Chaguanas                         | TTO         |
+| N´Djaména                         | TCD         |
+| Praha                             | CZE         |
+| Tunis                             | TUN         |
+| Istanbul                          | TUR         |
+| Ashgabat                          | TKM         |
+| Cockburn Town                     | TCA         |
+| Funafuti                          | TUV         |
+| Kampala                           | UGA         |
+| Kyiv                              | UKR         |
+| Budapest                          | HUN         |
+| Montevideo                        | URY         |
+| Nouméa                            | NCL         |
+| Auckland                          | NZL         |
+| Toskent                           | UZB         |
+| Minsk                             | BLR         |
+| Mata-Utu                          | WLF         |
+| Port-Vila                         | VUT         |
+| Città del Vaticano                | VAT         |
+| Caracas                           | VEN         |
+| Moscow                            | RUS         |
+| Ho Chi Minh City                  | VNM         |
+| Tallinn                           | EST         |
+| New York                          | USA         |
+| Charlotte Amalie                  | VIR         |
+| Harare                            | ZWE         |
+| Gaza                              | PSE         |
++-----------------------------------+-------------+
+232 rows in set (1.27 sec)
+
+mysql> -- fetch city name,country name where city with highest population name;
+mysql> select c1.name,(select name from country wher country.code=c1.countrycode) from city c1 wher c1.population=
+    -> (select max(c2.population) from city c2 where c2.countrycode=c1.countrycode);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'country.code=c1.countrycode) from city c1 wher c1.population=
+(select max(c2.pop' at line 1
+mysql> select c1.name,(select name from country wher country.code=c1.countrycode) from city c1 wher c1.population=
+    -> (select max(c2.population) from city c2 where c2.countrycode=c1.countrycode);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'country.code=c1.countrycode) from city c1 wher c1.population=
+(select max(c2.pop' at line 1
+mysql> select c1.name,(select name from country where country.code=c1.countrycode) from city c1 wher c1.population=
+    -> (select max(c2.population) from city c2 where c2.countrycode=c1.countrycode);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'wher c1.population=
+(select max(c2.population) from city c2 where c2.countrycode' at line 1
+mysql> select c1.name,(select name from country where country.code=c1.countrycode) from city c1 where c1.population=
+    -> (select max(c2.population) from city c2 where c2.countrycode=c1.countrycode);
++-----------------------------------+--------------------------------------------------------------+
+| name                              | (select name from country where country.code=c1.countrycode) |
++-----------------------------------+--------------------------------------------------------------+
+| Kabul                             | Afghanistan                                                  |
+| Amsterdam                         | Netherlands                                                  |
+| Willemstad                        | Netherlands Antilles                                         |
+| Tirana                            | Albania                                                      |
+| Alger                             | Algeria                                                      |
+| Tafuna                            | American Samoa                                               |
+| Andorra la Vella                  | Andorra                                                      |
+| Luanda                            | Angola                                                       |
+| South Hill                        | Anguilla                                                     |
+| Saint John´s                      | Antigua and Barbuda                                          |
+| Dubai                             | United Arab Emirates                                         |
+| Buenos Aires                      | Argentina                                                    |
+| Yerevan                           | Armenia                                                      |
+| Oranjestad                        | Aruba                                                        |
+| Sydney                            | Australia                                                    |
+| Bakı                              | Azerbaijan                                                   |
+| Nassau                            | Bahamas                                                      |
+| al-Manama                         | Bahrain                                                      |
+| Dhaka                             | Bangladesh                                                   |
+| Bridgetown                        | Barbados                                                     |
+| Antwerpen                         | Belgium                                                      |
+| Belize City                       | Belize                                                       |
+| Cotonou                           | Benin                                                        |
+| Saint George                      | Bermuda                                                      |
+| Thimphu                           | Bhutan                                                       |
+| Santa Cruz de la Sierra           | Bolivia                                                      |
+| Sarajevo                          | Bosnia and Herzegovina                                       |
+| Gaborone                          | Botswana                                                     |
+| São Paulo                         | Brazil                                                       |
+| London                            | United Kingdom                                               |
+| Road Town                         | Virgin Islands, British                                      |
+| Bandar Seri Begawan               | Brunei                                                       |
+| Sofija                            | Bulgaria                                                     |
+| Ouagadougou                       | Burkina Faso                                                 |
+| Bujumbura                         | Burundi                                                      |
+| George Town                       | Cayman Islands                                               |
+| Santiago de Chile                 | Chile                                                        |
+| Avarua                            | Cook Islands                                                 |
+| San José                          | Costa Rica                                                   |
+| Djibouti                          | Djibouti                                                     |
+| Roseau                            | Dominica                                                     |
+| Santo Domingo de Guzmán           | Dominican Republic                                           |
+| Guayaquil                         | Ecuador                                                      |
+| Cairo                             | Egypt                                                        |
+| San Salvador                      | El Salvador                                                  |
+| Asmara                            | Eritrea                                                      |
+| Madrid                            | Spain                                                        |
+| Cape Town                         | South Africa                                                 |
+| Addis Abeba                       | Ethiopia                                                     |
+| Stanley                           | Falkland Islands                                             |
+| Suva                              | Fiji Islands                                                 |
+| Quezon                            | Philippines                                                  |
+| Tórshavn                          | Faroe Islands                                                |
+| Libreville                        | Gabon                                                        |
+| Serekunda                         | Gambia                                                       |
+| Tbilisi                           | Georgia                                                      |
+| Accra                             | Ghana                                                        |
+| Gibraltar                         | Gibraltar                                                    |
+| Saint George´s                    | Grenada                                                      |
+| Nuuk                              | Greenland                                                    |
+| Les Abymes                        | Guadeloupe                                                   |
+| Tamuning                          | Guam                                                         |
+| Ciudad de Guatemala               | Guatemala                                                    |
+| Conakry                           | Guinea                                                       |
+| Bissau                            | Guinea-Bissau                                                |
+| Georgetown                        | Guyana                                                       |
+| Port-au-Prince                    | Haiti                                                        |
+| Tegucigalpa                       | Honduras                                                     |
+| Kowloon and New Kowloon           | Hong Kong                                                    |
+| Longyearbyen                      | Svalbard and Jan Mayen                                       |
+| Jakarta                           | Indonesia                                                    |
+| Mumbai (Bombay)                   | India                                                        |
+| Baghdad                           | Iraq                                                         |
+| Teheran                           | Iran                                                         |
+| Dublin                            | Ireland                                                      |
+| Reykjavík                         | Iceland                                                      |
+| Jerusalem                         | Israel                                                       |
+| Roma                              | Italy                                                        |
+| Dili                              | East Timor                                                   |
+| Wien                              | Austria                                                      |
+| Spanish Town                      | Jamaica                                                      |
+| Tokyo                             | Japan                                                        |
+| Sanaa                             | Yemen                                                        |
+| Amman                             | Jordan                                                       |
+| Flying Fish Cove                  | Christmas Island                                             |
+| Beograd                           | Yugoslavia                                                   |
+| Phnom Penh                        | Cambodia                                                     |
+| Douala                            | Cameroon                                                     |
+| Montréal                          | Canada                                                       |
+| Praia                             | Cape Verde                                                   |
+| Almaty                            | Kazakstan                                                    |
+| Nairobi                           | Kenya                                                        |
+| Bangui                            | Central African Republic                                     |
+| Shanghai                          | China                                                        |
+| Bishkek                           | Kyrgyzstan                                                   |
+| Bikenibeu                         | Kiribati                                                     |
+| Santafé de Bogotá                 | Colombia                                                     |
+| Moroni                            | Comoros                                                      |
+| Brazzaville                       | Congo                                                        |
+| Kinshasa                          | Congo, The Democratic Republic of the                        |
+| Bantam                            | Cocos (Keeling) Islands                                      |
+| Pyongyang                         | North Korea                                                  |
+| Seoul                             | South Korea                                                  |
+| Athenai                           | Greece                                                       |
+| Zagreb                            | Croatia                                                      |
+| La Habana                         | Cuba                                                         |
+| al-Salimiya                       | Kuwait                                                       |
+| Nicosia                           | Cyprus                                                       |
+| Vientiane                         | Laos                                                         |
+| Riga                              | Latvia                                                       |
+| Maseru                            | Lesotho                                                      |
+| Beirut                            | Lebanon                                                      |
+| Monrovia                          | Liberia                                                      |
+| Tripoli                           | Libyan Arab Jamahiriya                                       |
+| Schaan                            | Liechtenstein                                                |
+| Vilnius                           | Lithuania                                                    |
+| Luxembourg [Luxemburg/Lëtzebuerg] | Luxembourg                                                   |
+| El-Aaiún                          | Western Sahara                                               |
+| Macao                             | Macao                                                        |
+| Antananarivo                      | Madagascar                                                   |
+| Skopje                            | Macedonia                                                    |
+| Blantyre                          | Malawi                                                       |
+| Male                              | Maldives                                                     |
+| Kuala Lumpur                      | Malaysia                                                     |
+| Bamako                            | Mali                                                         |
+| Birkirkara                        | Malta                                                        |
+| Casablanca                        | Morocco                                                      |
+| Dalap-Uliga-Darrit                | Marshall Islands                                             |
+| Fort-de-France                    | Martinique                                                   |
+| Nouakchott                        | Mauritania                                                   |
+| Port-Louis                        | Mauritius                                                    |
+| Mamoutzou                         | Mayotte                                                      |
+| Ciudad de México                  | Mexico                                                       |
+| Weno                              | Micronesia, Federated States of                              |
+| Chisinau                          | Moldova                                                      |
+| Monte-Carlo                       | Monaco                                                       |
+| Ulan Bator                        | Mongolia                                                     |
+| Plymouth                          | Montserrat                                                   |
+| Maputo                            | Mozambique                                                   |
+| Rangoon (Yangon)                  | Myanmar                                                      |
+| Windhoek                          | Namibia                                                      |
+| Yangor                            | Nauru                                                        |
+| Kathmandu                         | Nepal                                                        |
+| Managua                           | Nicaragua                                                    |
+| Niamey                            | Niger                                                        |
+| Lagos                             | Nigeria                                                      |
+| Alofi                             | Niue                                                         |
+| Kingston                          | Norfolk Island                                               |
+| Oslo                              | Norway                                                       |
+| Abidjan                           | Côte d?Ivoire                                                |
+| al-Sib                            | Oman                                                         |
+| Karachi                           | Pakistan                                                     |
+| Koror                             | Palau                                                        |
+| Ciudad de Panamá                  | Panama                                                       |
+| Port Moresby                      | Papua New Guinea                                             |
+| Asunción                          | Paraguay                                                     |
+| Lima                              | Peru                                                         |
+| Adamstown                         | Pitcairn                                                     |
+| Garapan                           | Northern Mariana Islands                                     |
+| Lisboa                            | Portugal                                                     |
+| San Juan                          | Puerto Rico                                                  |
+| Warszawa                          | Poland                                                       |
+| Malabo                            | Equatorial Guinea                                            |
+| Doha                              | Qatar                                                        |
+| Paris                             | France                                                       |
+| Cayenne                           | French Guiana                                                |
+| Faaa                              | French Polynesia                                             |
+| Saint-Denis                       | Réunion                                                      |
+| Bucuresti                         | Romania                                                      |
+| Kigali                            | Rwanda                                                       |
+| Stockholm                         | Sweden                                                       |
+| Jamestown                         | Saint Helena                                                 |
+| Basseterre                        | Saint Kitts and Nevis                                        |
+| Castries                          | Saint Lucia                                                  |
+| Kingstown                         | Saint Vincent and the Grenadines                             |
+| Saint-Pierre                      | Saint Pierre and Miquelon                                    |
+| Berlin                            | Germany                                                      |
+| Honiara                           | Solomon Islands                                              |
+| Lusaka                            | Zambia                                                       |
+| Apia                              | Samoa                                                        |
+| Serravalle                        | San Marino                                                   |
+| São Tomé                          | Sao Tome and Principe                                        |
+| Riyadh                            | Saudi Arabia                                                 |
+| Pikine                            | Senegal                                                      |
+| Victoria                          | Seychelles                                                   |
+| Freetown                          | Sierra Leone                                                 |
+| Singapore                         | Singapore                                                    |
+| Bratislava                        | Slovakia                                                     |
+| Ljubljana                         | Slovenia                                                     |
+| Mogadishu                         | Somalia                                                      |
+| Colombo                           | Sri Lanka                                                    |
+| Omdurman                          | Sudan                                                        |
+| Helsinki [Helsingfors]            | Finland                                                      |
+| Paramaribo                        | Suriname                                                     |
+| Mbabane                           | Swaziland                                                    |
+| Zürich                            | Switzerland                                                  |
+| Damascus                          | Syria                                                        |
+| Dushanbe                          | Tajikistan                                                   |
+| Taipei                            | Taiwan                                                       |
+| Dar es Salaam                     | Tanzania                                                     |
+| København                         | Denmark                                                      |
+| Bangkok                           | Thailand                                                     |
+| Lomé                              | Togo                                                         |
+| Fakaofo                           | Tokelau                                                      |
+| Nuku´alofa                        | Tonga                                                        |
+| Chaguanas                         | Trinidad and Tobago                                          |
+| N´Djaména                         | Chad                                                         |
+| Praha                             | Czech Republic                                               |
+| Tunis                             | Tunisia                                                      |
+| Istanbul                          | Turkey                                                       |
+| Ashgabat                          | Turkmenistan                                                 |
+| Cockburn Town                     | Turks and Caicos Islands                                     |
+| Funafuti                          | Tuvalu                                                       |
+| Kampala                           | Uganda                                                       |
+| Kyiv                              | Ukraine                                                      |
+| Budapest                          | Hungary                                                      |
+| Montevideo                        | Uruguay                                                      |
+| Nouméa                            | New Caledonia                                                |
+| Auckland                          | New Zealand                                                  |
+| Toskent                           | Uzbekistan                                                   |
+| Minsk                             | Belarus                                                      |
+| Mata-Utu                          | Wallis and Futuna                                            |
+| Port-Vila                         | Vanuatu                                                      |
+| Città del Vaticano                | Holy See (Vatican City State)                                |
+| Caracas                           | Venezuela                                                    |
+| Moscow                            | Russian Federation                                           |
+| Ho Chi Minh City                  | Vietnam                                                      |
+| Tallinn                           | Estonia                                                      |
+| New York                          | United States                                                |
+| Charlotte Amalie                  | Virgin Islands, U.S.                                         |
+| Harare                            | Zimbabwe                                                     |
+| Gaza                              | Palestine                                                    |
++-----------------------------------+--------------------------------------------------------------+
+232 rows in set (1.24 sec)
+
+mysql>
+
+
