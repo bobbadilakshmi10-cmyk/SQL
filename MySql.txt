@@ -17009,3 +17009,1154 @@ mysql>
 mysql>
 
 
+
+
+
+
+
+
+
+-------------------------------15-04-2026----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8117]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 21
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| relation_info      |
+| sample_data        |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.04 sec)
+
+mysql> use world;
+Database changed
+mysql> -- fetch country name,city names wher countrycode 'ind'
+mysql> -- fetch country name,city names where countrycode 'ind'
+mysql> desc country;
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+| Field          | Type                                                                                  | Null | Key | Default | Extra |
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+| Code           | char(3)                                                                               | NO   | PRI |         |       |
+| Name           | char(52)                                                                              | NO   |     |         |       |
+| Continent      | enum('Asia','Europe','North America','Africa','Oceania','Antarctica','South America') | NO   |     | Asia    |       |
+| Region         | char(26)                                                                              | NO   |     |         |       |
+| SurfaceArea    | decimal(10,2)                                                                         | NO   |     | 0.00    |       |
+| IndepYear      | smallint                                                                              | YES  |     | NULL    |       |
+| Population     | int                                                                                   | NO   |     | 0       |       |
+| LifeExpectancy | decimal(3,1)                                                                          | YES  |     | NULL    |       |
+| GNP            | decimal(10,2)                                                                         | YES  |     | NULL    |       |
+| GNPOld         | decimal(10,2)                                                                         | YES  |     | NULL    |       |
+| LocalName      | char(45)                                                                              | NO   |     |         |       |
+| GovernmentForm | char(45)                                                                              | NO   |     |         |       |
+| HeadOfState    | char(60)                                                                              | YES  |     | NULL    |       |
+| Capital        | int                                                                                   | YES  |     | NULL    |       |
+| Code2          | char(2)                                                                               | NO   |     |         |       |
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+15 rows in set (0.03 sec)
+
+mysql> desc city;
++-------------+----------+------+-----+---------+----------------+
+| Field       | Type     | Null | Key | Default | Extra          |
++-------------+----------+------+-----+---------+----------------+
+| ID          | int      | NO   | PRI | NULL    | auto_increment |
+| Name        | char(35) | NO   |     |         |                |
+| CountryCode | char(3)  | NO   | MUL |         |                |
+| District    | char(20) | NO   |     |         |                |
+| Population  | int      | NO   |     | 0       |                |
++-------------+----------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+mysql> select country.name,city.name from country inner join city on country.code=city.countrycode
+    -> where countrycode='IND';
++-------+--------------------------------+
+| name  | name                           |
++-------+--------------------------------+
+| India | Mumbai (Bombay)                |
+| India | Delhi                          |
+| India | Calcutta [Kolkata]             |
+| India | Chennai (Madras)               |
+| India | Hyderabad                      |
+| India | Ahmedabad                      |
+| India | Bangalore                      |
+| India | Kanpur                         |
+| India | Nagpur                         |
+| India | Lucknow                        |
+| India | Pune                           |
+| India | Surat                          |
+| India | Jaipur                         |
+| India | Indore                         |
+| India | Bhopal                         |
+| India | Ludhiana                       |
+| India | Vadodara (Baroda)              |
+| India | Kalyan                         |
+| India | Madurai                        |
+| India | Haora (Howrah)                 |
+| India | Varanasi (Benares)             |
+| India | Patna                          |
+| India | Srinagar                       |
+| India | Agra                           |
+| India | Coimbatore                     |
+| India | Thane (Thana)                  |
+| India | Allahabad                      |
+| India | Meerut                         |
+| India | Vishakhapatnam                 |
+| India | Jabalpur                       |
+| India | Amritsar                       |
+| India | Faridabad                      |
+| India | Vijayawada                     |
+| India | Gwalior                        |
+| India | Jodhpur                        |
+| India | Nashik (Nasik)                 |
+| India | Hubli-Dharwad                  |
+| India | Solapur (Sholapur)             |
+| India | Ranchi                         |
+| India | Bareilly                       |
+| India | Guwahati (Gauhati)             |
+| India | Shambajinagar (Aurangabad)     |
+| India | Cochin (Kochi)                 |
+| India | Rajkot                         |
+| India | Kota                           |
+| India | Thiruvananthapuram (Trivandrum |
+| India | Pimpri-Chinchwad               |
+| India | Jalandhar (Jullundur)          |
+| India | Gorakhpur                      |
+| India | Chandigarh                     |
+| India | Mysore                         |
+| India | Aligarh                        |
+| India | Guntur                         |
+| India | Jamshedpur                     |
+| India | Ghaziabad                      |
+| India | Warangal                       |
+| India | Raipur                         |
+| India | Moradabad                      |
+| India | Durgapur                       |
+| India | Amravati                       |
+| India | Calicut (Kozhikode)            |
+| India | Bikaner                        |
+| India | Bhubaneswar                    |
+| India | Kolhapur                       |
+| India | Kataka (Cuttack)               |
+| India | Ajmer                          |
+| India | Bhavnagar                      |
+| India | Tiruchirapalli                 |
+| India | Bhilai                         |
+| India | Bhiwandi                       |
+| India | Saharanpur                     |
+| India | Ulhasnagar                     |
+| India | Salem                          |
+| India | Ujjain                         |
+| India | Malegaon                       |
+| India | Jamnagar                       |
+| India | Bokaro Steel City              |
+| India | Akola                          |
+| India | Belgaum                        |
+| India | Rajahmundry                    |
+| India | Nellore                        |
+| India | Udaipur                        |
+| India | New Bombay                     |
+| India | Bhatpara                       |
+| India | Gulbarga                       |
+| India | New Delhi                      |
+| India | Jhansi                         |
+| India | Gaya                           |
+| India | Kakinada                       |
+| India | Dhule (Dhulia)                 |
+| India | Panihati                       |
+| India | Nanded (Nander)                |
+| India | Mangalore                      |
+| India | Dehra Dun                      |
+| India | Kamarhati                      |
+| India | Davangere                      |
+| India | Asansol                        |
+| India | Bhagalpur                      |
+| India | Bellary                        |
+| India | Barddhaman (Burdwan)           |
+| India | Rampur                         |
+| India | Jalgaon                        |
+| India | Muzaffarpur                    |
+| India | Nizamabad                      |
+| India | Muzaffarnagar                  |
+| India | Patiala                        |
+| India | Shahjahanpur                   |
+| India | Kurnool                        |
+| India | Tiruppur (Tirupper)            |
+| India | Rohtak                         |
+| India | South Dum Dum                  |
+| India | Mathura                        |
+| India | Chandrapur                     |
+| India | Barahanagar (Baranagar)        |
+| India | Darbhanga                      |
+| India | Siliguri (Shiliguri)           |
+| India | Raurkela                       |
+| India | Ambattur                       |
+| India | Panipat                        |
+| India | Firozabad                      |
+| India | Ichalkaranji                   |
+| India | Jammu                          |
+| India | Ramagundam                     |
+| India | Eluru                          |
+| India | Brahmapur                      |
+| India | Alwar                          |
+| India | Pondicherry                    |
+| India | Thanjavur                      |
+| India | Bihar Sharif                   |
+| India | Tuticorin                      |
+| India | Imphal                         |
+| India | Latur                          |
+| India | Sagar                          |
+| India | Farrukhabad-cum-Fatehgarh      |
+| India | Sangli                         |
+| India | Parbhani                       |
+| India | Nagar Coil                     |
+| India | Bijapur                        |
+| India | Kukatpalle                     |
+| India | Bally                          |
+| India | Bhilwara                       |
+| India | Ratlam                         |
+| India | Avadi                          |
+| India | Dindigul                       |
+| India | Ahmadnagar                     |
+| India | Bilaspur                       |
+| India | Shimoga                        |
+| India | Kharagpur                      |
+| India | Mira Bhayandar                 |
+| India | Vellore                        |
+| India | Jalna                          |
+| India | Burnpur                        |
+| India | Anantapur                      |
+| India | Allappuzha (Alleppey)          |
+| India | Tirupati                       |
+| India | Karnal                         |
+| India | Burhanpur                      |
+| India | Hisar (Hissar)                 |
+| India | Tiruvottiyur                   |
+| India | Mirzapur-cum-Vindhyachal       |
+| India | Secunderabad                   |
+| India | Nadiad                         |
+| India | Dewas                          |
+| India | Murwara (Katni)                |
+| India | Ganganagar                     |
+| India | Vizianagaram                   |
+| India | Erode                          |
+| India | Machilipatnam (Masulipatam)    |
+| India | Bhatinda (Bathinda)            |
+| India | Raichur                        |
+| India | Agartala                       |
+| India | Arrah (Ara)                    |
+| India | Satna                          |
+| India | Lalbahadur Nagar               |
+| India | Aizawl                         |
+| India | Uluberia                       |
+| India | Katihar                        |
+| India | Cuddalore                      |
+| India | Hugli-Chinsurah                |
+| India | Dhanbad                        |
+| India | Raiganj                        |
+| India | Sambhal                        |
+| India | Durg                           |
+| India | Munger (Monghyr)               |
+| India | Kanchipuram                    |
+| India | North Dum Dum                  |
+| India | Karimnagar                     |
+| India | Bharatpur                      |
+| India | Sikar                          |
+| India | Hardwar (Haridwar)             |
+| India | Dabgram                        |
+| India | Morena                         |
+| India | Noida                          |
+| India | Hapur                          |
+| India | Bhusawal                       |
+| India | Khandwa                        |
+| India | Yamuna Nagar                   |
+| India | Sonipat (Sonepat)              |
+| India | Tenali                         |
+| India | Raurkela Civil Township        |
+| India | Kollam (Quilon)                |
+| India | Kumbakonam                     |
+| India | Ingraj Bazar (English Bazar)   |
+| India | Timkur                         |
+| India | Amroha                         |
+| India | Serampore                      |
+| India | Chapra                         |
+| India | Pali                           |
+| India | Maunath Bhanjan                |
+| India | Adoni                          |
+| India | Jaunpur                        |
+| India | Tirunelveli                    |
+| India | Bahraich                       |
+| India | Gadag Betigeri                 |
+| India | Proddatur                      |
+| India | Chittoor                       |
+| India | Barrackpur                     |
+| India | Bharuch (Broach)               |
+| India | Naihati                        |
+| India | Shillong                       |
+| India | Sambalpur                      |
+| India | Junagadh                       |
+| India | Rae Bareli                     |
+| India | Rewa                           |
+| India | Gurgaon                        |
+| India | Khammam                        |
+| India | Bulandshahr                    |
+| India | Navsari                        |
+| India | Malkajgiri                     |
+| India | Midnapore (Medinipur)          |
+| India | Miraj                          |
+| India | Raj Nandgaon                   |
+| India | Alandur                        |
+| India | Puri                           |
+| India | Navadwip                       |
+| India | Sirsa                          |
+| India | Korba                          |
+| India | Faizabad                       |
+| India | Etawah                         |
+| India | Pathankot                      |
+| India | Gandhinagar                    |
+| India | Palghat (Palakkad)             |
+| India | Veraval                        |
+| India | Hoshiarpur                     |
+| India | Ambala                         |
+| India | Sitapur                        |
+| India | Bhiwani                        |
+| India | Cuddapah                       |
+| India | Bhimavaram                     |
+| India | Krishnanagar                   |
+| India | Chandannagar                   |
+| India | Mandya                         |
+| India | Dibrugarh                      |
+| India | Nandyal                        |
+| India | Balurghat                      |
+| India | Neyveli                        |
+| India | Fatehpur                       |
+| India | Mahbubnagar                    |
+| India | Budaun                         |
+| India | Porbandar                      |
+| India | Silchar                        |
+| India | Berhampore (Baharampur)        |
+| India | Purnea (Purnia)                |
+| India | Bankura                        |
+| India | Rajapalaiyam                   |
+| India | Titagarh                       |
+| India | Halisahar                      |
+| India | Hathras                        |
+| India | Bhir (Bid)                     |
+| India | Pallavaram                     |
+| India | Anand                          |
+| India | Mango                          |
+| India | Santipur                       |
+| India | Bhind                          |
+| India | Gondiya                        |
+| India | Tiruvannamalai                 |
+| India | Yeotmal (Yavatmal)             |
+| India | Kulti-Barakar                  |
+| India | Moga                           |
+| India | Shivapuri                      |
+| India | Bidar                          |
+| India | Guntakal                       |
+| India | Unnao                          |
+| India | Barasat                        |
+| India | Tambaram                       |
+| India | Abohar                         |
+| India | Pilibhit                       |
+| India | Valparai                       |
+| India | Gonda                          |
+| India | Surendranagar                  |
+| India | Qutubullapur                   |
+| India | Beawar                         |
+| India | Hindupur                       |
+| India | Gandhidham                     |
+| India | Haldwani-cum-Kathgodam         |
+| India | Tellicherry (Thalassery)       |
+| India | Wardha                         |
+| India | Rishra                         |
+| India | Bhuj                           |
+| India | Modinagar                      |
+| India | Gudivada                       |
+| India | Basirhat                       |
+| India | Uttarpara-Kotrung              |
+| India | Ongole                         |
+| India | North Barrackpur               |
+| India | Guna                           |
+| India | Haldia                         |
+| India | Habra                          |
+| India | Kanchrapara                    |
+| India | Tonk                           |
+| India | Champdani                      |
+| India | Orai                           |
+| India | Pudukkottai                    |
+| India | Sasaram                        |
+| India | Hazaribag                      |
+| India | Palayankottai                  |
+| India | Banda                          |
+| India | Godhra                         |
+| India | Hospet                         |
+| India | Ashoknagar-Kalyangarh          |
+| India | Achalpur                       |
+| India | Patan                          |
+| India | Mandasor                       |
+| India | Damoh                          |
+| India | Satara                         |
+| India | Meerut Cantonment              |
+| India | Dehri                          |
+| India | Delhi Cantonment               |
+| India | Chhindwara                     |
+| India | Bansberia                      |
+| India | Nagaon                         |
+| India | Kanpur Cantonment              |
+| India | Vidisha                        |
+| India | Bettiah                        |
+| India | Purulia                        |
+| India | Hassan                         |
+| India | Ambala Sadar                   |
+| India | Baidyabati                     |
+| India | Morvi                          |
+| India | Raigarh                        |
+| India | Vejalpur                       |
++-------+--------------------------------+
+341 rows in set (0.02 sec)
+
+mysql> -- fetch country name,official language for all country;
+mysql> desc country;
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+| Field          | Type                                                                                  | Null | Key | Default | Extra |
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+| Code           | char(3)                                                                               | NO   | PRI |         |       |
+| Name           | char(52)                                                                              | NO   |     |         |       |
+| Continent      | enum('Asia','Europe','North America','Africa','Oceania','Antarctica','South America') | NO   |     | Asia    |       |
+| Region         | char(26)                                                                              | NO   |     |         |       |
+| SurfaceArea    | decimal(10,2)                                                                         | NO   |     | 0.00    |       |
+| IndepYear      | smallint                                                                              | YES  |     | NULL    |       |
+| Population     | int                                                                                   | NO   |     | 0       |       |
+| LifeExpectancy | decimal(3,1)                                                                          | YES  |     | NULL    |       |
+| GNP            | decimal(10,2)                                                                         | YES  |     | NULL    |       |
+| GNPOld         | decimal(10,2)                                                                         | YES  |     | NULL    |       |
+| LocalName      | char(45)                                                                              | NO   |     |         |       |
+| GovernmentForm | char(45)                                                                              | NO   |     |         |       |
+| HeadOfState    | char(60)                                                                              | YES  |     | NULL    |       |
+| Capital        | int                                                                                   | YES  |     | NULL    |       |
+| Code2          | char(2)                                                                               | NO   |     |         |       |
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+15 rows in set (0.00 sec)
+
+mysql> dese countrylanguage;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dese countrylanguage' at line 1
+mysql> dese countrylanguages;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dese countrylanguages' at line 1
+mysql> desc countrylanguage;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| CountryCode | char(3)       | NO   | PRI |         |       |
+| Language    | char(30)      | NO   | PRI |         |       |
+| IsOfficial  | enum('T','F') | NO   |     | F       |       |
+| Percentage  | decimal(4,1)  | NO   |     | 0.0     |       |
++-------------+---------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> select name,language from country inner join  countrylanguage on country.code=countrylanguage.countrycode where country.code='ind';
++-------+-----------+
+| name  | language  |
++-------+-----------+
+| India | Asami     |
+| India | Bengali   |
+| India | Gujarati  |
+| India | Hindi     |
+| India | Kannada   |
+| India | Malajalam |
+| India | Marathi   |
+| India | Orija     |
+| India | Punjabi   |
+| India | Tamil     |
+| India | Telugu    |
+| India | Urdu      |
++-------+-----------+
+12 rows in set (0.01 sec)
+
+mysql> select name,language from country inner join  countrylanguage on country.code=countrylanguage.countrycode where isofficial='T';
++--------------------------------------+------------------+
+| name                                 | language         |
++--------------------------------------+------------------+
+| Aruba                                | Dutch            |
+| Afghanistan                          | Dari             |
+| Afghanistan                          | Pashto           |
+| Anguilla                             | English          |
+| Albania                              | Albaniana        |
+| Andorra                              | Catalan          |
+| Netherlands Antilles                 | Dutch            |
+| Netherlands Antilles                 | Papiamento       |
+| United Arab Emirates                 | Arabic           |
+| Argentina                            | Spanish          |
+| Armenia                              | Armenian         |
+| American Samoa                       | English          |
+| American Samoa                       | Samoan           |
+| Antigua and Barbuda                  | English          |
+| Australia                            | English          |
+| Austria                              | German           |
+| Azerbaijan                           | Azerbaijani      |
+| Burundi                              | French           |
+| Burundi                              | Kirundi          |
+| Belgium                              | Dutch            |
+| Belgium                              | French           |
+| Belgium                              | German           |
+| Bangladesh                           | Bengali          |
+| Bulgaria                             | Bulgariana       |
+| Bahrain                              | Arabic           |
+| Bosnia and Herzegovina               | Serbo-Croatian   |
+| Belarus                              | Belorussian      |
+| Belarus                              | Russian          |
+| Belize                               | English          |
+| Bermuda                              | English          |
+| Bolivia                              | Aimará           |
+| Bolivia                              | Ket?ua           |
+| Bolivia                              | Spanish          |
+| Brazil                               | Portuguese       |
+| Barbados                             | English          |
+| Brunei                               | Malay            |
+| Bhutan                               | Dzongkha         |
+| Canada                               | English          |
+| Canada                               | French           |
+| Cocos (Keeling) Islands              | English          |
+| Switzerland                          | French           |
+| Switzerland                          | German           |
+| Switzerland                          | Italian          |
+| Switzerland                          | Romansh          |
+| Chile                                | Spanish          |
+| China                                | Chinese          |
+| Cook Islands                         | Maori            |
+| Colombia                             | Spanish          |
+| Comoros                              | Comorian         |
+| Cape Verde                           | Portuguese       |
+| Costa Rica                           | Spanish          |
+| Cuba                                 | Spanish          |
+| Christmas Island                     | English          |
+| Cayman Islands                       | English          |
+| Cyprus                               | Greek            |
+| Cyprus                               | Turkish          |
+| Czech Republic                       | Czech            |
+| Germany                              | German           |
+| Djibouti                             | Arabic           |
+| Denmark                              | Danish           |
+| Dominican Republic                   | Spanish          |
+| Algeria                              | Arabic           |
+| Ecuador                              | Spanish          |
+| Egypt                                | Arabic           |
+| Eritrea                              | Tigrinja         |
+| Western Sahara                       | Arabic           |
+| Spain                                | Spanish          |
+| Estonia                              | Estonian         |
+| Finland                              | Finnish          |
+| Finland                              | Swedish          |
+| Fiji Islands                         | Fijian           |
+| Falkland Islands                     | English          |
+| France                               | French           |
+| Faroe Islands                        | Danish           |
+| Faroe Islands                        | Faroese          |
+| United Kingdom                       | English          |
+| Georgia                              | Georgiana        |
+| Gibraltar                            | English          |
+| Guadeloupe                           | French           |
+| Guinea-Bissau                        | Portuguese       |
+| Greece                               | Greek            |
+| Greenland                            | Danish           |
+| Greenland                            | Greenlandic      |
+| Guatemala                            | Spanish          |
+| Guam                                 | Chamorro         |
+| Guam                                 | English          |
+| Hong Kong                            | English          |
+| Honduras                             | Spanish          |
+| Croatia                              | Serbo-Croatian   |
+| Haiti                                | French           |
+| Hungary                              | Hungarian        |
+| Indonesia                            | Malay            |
+| India                                | Hindi            |
+| Ireland                              | English          |
+| Ireland                              | Irish            |
+| Iran                                 | Persian          |
+| Iraq                                 | Arabic           |
+| Iceland                              | Icelandic        |
+| Israel                               | Arabic           |
+| Israel                               | Hebrew           |
+| Italy                                | Italian          |
+| Jordan                               | Arabic           |
+| Japan                                | Japanese         |
+| Kazakstan                            | Kazakh           |
+| Kyrgyzstan                           | Kirgiz           |
+| Kyrgyzstan                           | Russian          |
+| Cambodia                             | Khmer            |
+| Kiribati                             | Kiribati         |
+| Saint Kitts and Nevis                | English          |
+| South Korea                          | Korean           |
+| Kuwait                               | Arabic           |
+| Laos                                 | Lao              |
+| Lebanon                              | Arabic           |
+| Libyan Arab Jamahiriya               | Arabic           |
+| Saint Lucia                          | English          |
+| Liechtenstein                        | German           |
+| Sri Lanka                            | Singali          |
+| Sri Lanka                            | Tamil            |
+| Lesotho                              | English          |
+| Lesotho                              | Sotho            |
+| Lithuania                            | Lithuanian       |
+| Luxembourg                           | French           |
+| Luxembourg                           | German           |
+| Luxembourg                           | Luxembourgish    |
+| Latvia                               | Latvian          |
+| Macao                                | Portuguese       |
+| Morocco                              | Arabic           |
+| Monaco                               | French           |
+| Moldova                              | Romanian         |
+| Madagascar                           | French           |
+| Madagascar                           | Malagasy         |
+| Maldives                             | Dhivehi          |
+| Mexico                               | Spanish          |
+| Marshall Islands                     | English          |
+| Marshall Islands                     | Marshallese      |
+| Macedonia                            | Macedonian       |
+| Malta                                | English          |
+| Malta                                | Maltese          |
+| Myanmar                              | Burmese          |
+| Mongolia                             | Mongolian        |
+| Northern Mariana Islands             | English          |
+| Montserrat                           | English          |
+| Martinique                           | French           |
+| Malawi                               | Chichewa         |
+| Malaysia                             | Malay            |
+| Mayotte                              | French           |
+| New Caledonia                        | French           |
+| Norfolk Island                       | English          |
+| Nicaragua                            | Spanish          |
+| Niue                                 | English          |
+| Netherlands                          | Dutch            |
+| Norway                               | Norwegian        |
+| Nepal                                | Nepali           |
+| Nauru                                | English          |
+| Nauru                                | Nauru            |
+| New Zealand                          | English          |
+| Oman                                 | Arabic           |
+| Pakistan                             | Urdu             |
+| Panama                               | Spanish          |
+| Peru                                 | Aimará           |
+| Peru                                 | Ket?ua           |
+| Peru                                 | Spanish          |
+| Philippines                          | Pilipino         |
+| Palau                                | English          |
+| Palau                                | Palau            |
+| Poland                               | Polish           |
+| Puerto Rico                          | Spanish          |
+| North Korea                          | Korean           |
+| Portugal                             | Portuguese       |
+| Paraguay                             | Guaraní          |
+| Paraguay                             | Spanish          |
+| French Polynesia                     | French           |
+| Qatar                                | Arabic           |
+| Romania                              | Romani           |
+| Romania                              | Romanian         |
+| Russian Federation                   | Russian          |
+| Rwanda                               | French           |
+| Rwanda                               | Rwanda           |
+| Saudi Arabia                         | Arabic           |
+| Sudan                                | Arabic           |
+| Senegal                              | Wolof            |
+| Singapore                            | Chinese          |
+| Singapore                            | Malay            |
+| Singapore                            | Tamil            |
+| Saint Helena                         | English          |
+| Svalbard and Jan Mayen               | Norwegian        |
+| El Salvador                          | Spanish          |
+| San Marino                           | Italian          |
+| Somalia                              | Arabic           |
+| Somalia                              | Somali           |
+| Saint Pierre and Miquelon            | French           |
+| Slovakia                             | Slovak           |
+| Slovenia                             | Slovene          |
+| Sweden                               | Swedish          |
+| Swaziland                            | Swazi            |
+| Seychelles                           | English          |
+| Seychelles                           | French           |
+| Syria                                | Arabic           |
+| Turks and Caicos Islands             | English          |
+| Chad                                 | Arabic           |
+| Togo                                 | Ewe              |
+| Togo                                 | Kabyé            |
+| Thailand                             | Thai             |
+| Tajikistan                           | Tadzhik          |
+| Tokelau                              | English          |
+| Turkmenistan                         | Turkmenian       |
+| East Timor                           | Portuguese       |
+| Tonga                                | English          |
+| Tonga                                | Tongan           |
+| Tunisia                              | Arabic           |
+| Turkey                               | Turkish          |
+| Tuvalu                               | English          |
+| Tuvalu                               | Tuvalu           |
+| Taiwan                               | Mandarin Chinese |
+| Tanzania                             | Swahili          |
+| Ukraine                              | Ukrainian        |
+| United States Minor Outlying Islands | English          |
+| Uruguay                              | Spanish          |
+| United States                        | English          |
+| Uzbekistan                           | Uzbek            |
+| Holy See (Vatican City State)        | Italian          |
+| Saint Vincent and the Grenadines     | English          |
+| Venezuela                            | Spanish          |
+| Virgin Islands, British              | English          |
+| Virgin Islands, U.S.                 | English          |
+| Vietnam                              | Vietnamese       |
+| Vanuatu                              | Bislama          |
+| Vanuatu                              | English          |
+| Vanuatu                              | French           |
+| Samoa                                | English          |
+| Samoa                                | Samoan           |
+| Yemen                                | Arabic           |
+| Yugoslavia                           | Serbo-Croatian   |
+| South Africa                         | Afrikaans        |
+| South Africa                         | English          |
+| South Africa                         | Xhosa            |
+| South Africa                         | Zulu             |
+| Zimbabwe                             | English          |
++--------------------------------------+------------------+
+238 rows in set (0.00 sec)
+
+mysql> -- fetch country name,official language where english is the official language;
+mysql> select name,language from country inner join  countrylanguage on country.code=countrylanguage.countrycode where isofficial='T'
+    -> and language='English';
++--------------------------------------+----------+
+| name                                 | language |
++--------------------------------------+----------+
+| Anguilla                             | English  |
+| American Samoa                       | English  |
+| Antigua and Barbuda                  | English  |
+| Australia                            | English  |
+| Belize                               | English  |
+| Bermuda                              | English  |
+| Barbados                             | English  |
+| Canada                               | English  |
+| Cocos (Keeling) Islands              | English  |
+| Christmas Island                     | English  |
+| Cayman Islands                       | English  |
+| Falkland Islands                     | English  |
+| United Kingdom                       | English  |
+| Gibraltar                            | English  |
+| Guam                                 | English  |
+| Hong Kong                            | English  |
+| Ireland                              | English  |
+| Saint Kitts and Nevis                | English  |
+| Saint Lucia                          | English  |
+| Lesotho                              | English  |
+| Marshall Islands                     | English  |
+| Malta                                | English  |
+| Northern Mariana Islands             | English  |
+| Montserrat                           | English  |
+| Norfolk Island                       | English  |
+| Niue                                 | English  |
+| Nauru                                | English  |
+| New Zealand                          | English  |
+| Palau                                | English  |
+| Saint Helena                         | English  |
+| Seychelles                           | English  |
+| Turks and Caicos Islands             | English  |
+| Tokelau                              | English  |
+| Tonga                                | English  |
+| Tuvalu                               | English  |
+| United States Minor Outlying Islands | English  |
+| United States                        | English  |
+| Saint Vincent and the Grenadines     | English  |
+| Virgin Islands, British              | English  |
+| Virgin Islands, U.S.                 | English  |
+| Vanuatu                              | English  |
+| Samoa                                | English  |
+| South Africa                         | English  |
+| Zimbabwe                             | English  |
++--------------------------------------+----------+
+44 rows in set (0.00 sec)
+
+mysql> select name,language from country inner join  countrylanguage on country.code=countrylanguage.countrycode where isofficial='T'
+    -> and officialcountry='English';
+ERROR 1054 (42S22): Unknown column 'officialcountry' in 'where clause'
+mysql> select name,language from country inner join  countrylanguage on country.code=countrylanguage.countrycode where isofficial='T'
+    -> ;
++--------------------------------------+------------------+
+| name                                 | language         |
++--------------------------------------+------------------+
+| Aruba                                | Dutch            |
+| Afghanistan                          | Dari             |
+| Afghanistan                          | Pashto           |
+| Anguilla                             | English          |
+| Albania                              | Albaniana        |
+| Andorra                              | Catalan          |
+| Netherlands Antilles                 | Dutch            |
+| Netherlands Antilles                 | Papiamento       |
+| United Arab Emirates                 | Arabic           |
+| Argentina                            | Spanish          |
+| Armenia                              | Armenian         |
+| American Samoa                       | English          |
+| American Samoa                       | Samoan           |
+| Antigua and Barbuda                  | English          |
+| Australia                            | English          |
+| Austria                              | German           |
+| Azerbaijan                           | Azerbaijani      |
+| Burundi                              | French           |
+| Burundi                              | Kirundi          |
+| Belgium                              | Dutch            |
+| Belgium                              | French           |
+| Belgium                              | German           |
+| Bangladesh                           | Bengali          |
+| Bulgaria                             | Bulgariana       |
+| Bahrain                              | Arabic           |
+| Bosnia and Herzegovina               | Serbo-Croatian   |
+| Belarus                              | Belorussian      |
+| Belarus                              | Russian          |
+| Belize                               | English          |
+| Bermuda                              | English          |
+| Bolivia                              | Aimará           |
+| Bolivia                              | Ket?ua           |
+| Bolivia                              | Spanish          |
+| Brazil                               | Portuguese       |
+| Barbados                             | English          |
+| Brunei                               | Malay            |
+| Bhutan                               | Dzongkha         |
+| Canada                               | English          |
+| Canada                               | French           |
+| Cocos (Keeling) Islands              | English          |
+| Switzerland                          | French           |
+| Switzerland                          | German           |
+| Switzerland                          | Italian          |
+| Switzerland                          | Romansh          |
+| Chile                                | Spanish          |
+| China                                | Chinese          |
+| Cook Islands                         | Maori            |
+| Colombia                             | Spanish          |
+| Comoros                              | Comorian         |
+| Cape Verde                           | Portuguese       |
+| Costa Rica                           | Spanish          |
+| Cuba                                 | Spanish          |
+| Christmas Island                     | English          |
+| Cayman Islands                       | English          |
+| Cyprus                               | Greek            |
+| Cyprus                               | Turkish          |
+| Czech Republic                       | Czech            |
+| Germany                              | German           |
+| Djibouti                             | Arabic           |
+| Denmark                              | Danish           |
+| Dominican Republic                   | Spanish          |
+| Algeria                              | Arabic           |
+| Ecuador                              | Spanish          |
+| Egypt                                | Arabic           |
+| Eritrea                              | Tigrinja         |
+| Western Sahara                       | Arabic           |
+| Spain                                | Spanish          |
+| Estonia                              | Estonian         |
+| Finland                              | Finnish          |
+| Finland                              | Swedish          |
+| Fiji Islands                         | Fijian           |
+| Falkland Islands                     | English          |
+| France                               | French           |
+| Faroe Islands                        | Danish           |
+| Faroe Islands                        | Faroese          |
+| United Kingdom                       | English          |
+| Georgia                              | Georgiana        |
+| Gibraltar                            | English          |
+| Guadeloupe                           | French           |
+| Guinea-Bissau                        | Portuguese       |
+| Greece                               | Greek            |
+| Greenland                            | Danish           |
+| Greenland                            | Greenlandic      |
+| Guatemala                            | Spanish          |
+| Guam                                 | Chamorro         |
+| Guam                                 | English          |
+| Hong Kong                            | English          |
+| Honduras                             | Spanish          |
+| Croatia                              | Serbo-Croatian   |
+| Haiti                                | French           |
+| Hungary                              | Hungarian        |
+| Indonesia                            | Malay            |
+| India                                | Hindi            |
+| Ireland                              | English          |
+| Ireland                              | Irish            |
+| Iran                                 | Persian          |
+| Iraq                                 | Arabic           |
+| Iceland                              | Icelandic        |
+| Israel                               | Arabic           |
+| Israel                               | Hebrew           |
+| Italy                                | Italian          |
+| Jordan                               | Arabic           |
+| Japan                                | Japanese         |
+| Kazakstan                            | Kazakh           |
+| Kyrgyzstan                           | Kirgiz           |
+| Kyrgyzstan                           | Russian          |
+| Cambodia                             | Khmer            |
+| Kiribati                             | Kiribati         |
+| Saint Kitts and Nevis                | English          |
+| South Korea                          | Korean           |
+| Kuwait                               | Arabic           |
+| Laos                                 | Lao              |
+| Lebanon                              | Arabic           |
+| Libyan Arab Jamahiriya               | Arabic           |
+| Saint Lucia                          | English          |
+| Liechtenstein                        | German           |
+| Sri Lanka                            | Singali          |
+| Sri Lanka                            | Tamil            |
+| Lesotho                              | English          |
+| Lesotho                              | Sotho            |
+| Lithuania                            | Lithuanian       |
+| Luxembourg                           | French           |
+| Luxembourg                           | German           |
+| Luxembourg                           | Luxembourgish    |
+| Latvia                               | Latvian          |
+| Macao                                | Portuguese       |
+| Morocco                              | Arabic           |
+| Monaco                               | French           |
+| Moldova                              | Romanian         |
+| Madagascar                           | French           |
+| Madagascar                           | Malagasy         |
+| Maldives                             | Dhivehi          |
+| Mexico                               | Spanish          |
+| Marshall Islands                     | English          |
+| Marshall Islands                     | Marshallese      |
+| Macedonia                            | Macedonian       |
+| Malta                                | English          |
+| Malta                                | Maltese          |
+| Myanmar                              | Burmese          |
+| Mongolia                             | Mongolian        |
+| Northern Mariana Islands             | English          |
+| Montserrat                           | English          |
+| Martinique                           | French           |
+| Malawi                               | Chichewa         |
+| Malaysia                             | Malay            |
+| Mayotte                              | French           |
+| New Caledonia                        | French           |
+| Norfolk Island                       | English          |
+| Nicaragua                            | Spanish          |
+| Niue                                 | English          |
+| Netherlands                          | Dutch            |
+| Norway                               | Norwegian        |
+| Nepal                                | Nepali           |
+| Nauru                                | English          |
+| Nauru                                | Nauru            |
+| New Zealand                          | English          |
+| Oman                                 | Arabic           |
+| Pakistan                             | Urdu             |
+| Panama                               | Spanish          |
+| Peru                                 | Aimará           |
+| Peru                                 | Ket?ua           |
+| Peru                                 | Spanish          |
+| Philippines                          | Pilipino         |
+| Palau                                | English          |
+| Palau                                | Palau            |
+| Poland                               | Polish           |
+| Puerto Rico                          | Spanish          |
+| North Korea                          | Korean           |
+| Portugal                             | Portuguese       |
+| Paraguay                             | Guaraní          |
+| Paraguay                             | Spanish          |
+| French Polynesia                     | French           |
+| Qatar                                | Arabic           |
+| Romania                              | Romani           |
+| Romania                              | Romanian         |
+| Russian Federation                   | Russian          |
+| Rwanda                               | French           |
+| Rwanda                               | Rwanda           |
+| Saudi Arabia                         | Arabic           |
+| Sudan                                | Arabic           |
+| Senegal                              | Wolof            |
+| Singapore                            | Chinese          |
+| Singapore                            | Malay            |
+| Singapore                            | Tamil            |
+| Saint Helena                         | English          |
+| Svalbard and Jan Mayen               | Norwegian        |
+| El Salvador                          | Spanish          |
+| San Marino                           | Italian          |
+| Somalia                              | Arabic           |
+| Somalia                              | Somali           |
+| Saint Pierre and Miquelon            | French           |
+| Slovakia                             | Slovak           |
+| Slovenia                             | Slovene          |
+| Sweden                               | Swedish          |
+| Swaziland                            | Swazi            |
+| Seychelles                           | English          |
+| Seychelles                           | French           |
+| Syria                                | Arabic           |
+| Turks and Caicos Islands             | English          |
+| Chad                                 | Arabic           |
+| Togo                                 | Ewe              |
+| Togo                                 | Kabyé            |
+| Thailand                             | Thai             |
+| Tajikistan                           | Tadzhik          |
+| Tokelau                              | English          |
+| Turkmenistan                         | Turkmenian       |
+| East Timor                           | Portuguese       |
+| Tonga                                | English          |
+| Tonga                                | Tongan           |
+| Tunisia                              | Arabic           |
+| Turkey                               | Turkish          |
+| Tuvalu                               | English          |
+| Tuvalu                               | Tuvalu           |
+| Taiwan                               | Mandarin Chinese |
+| Tanzania                             | Swahili          |
+| Ukraine                              | Ukrainian        |
+| United States Minor Outlying Islands | English          |
+| Uruguay                              | Spanish          |
+| United States                        | English          |
+| Uzbekistan                           | Uzbek            |
+| Holy See (Vatican City State)        | Italian          |
+| Saint Vincent and the Grenadines     | English          |
+| Venezuela                            | Spanish          |
+| Virgin Islands, British              | English          |
+| Virgin Islands, U.S.                 | English          |
+| Vietnam                              | Vietnamese       |
+| Vanuatu                              | Bislama          |
+| Vanuatu                              | English          |
+| Vanuatu                              | French           |
+| Samoa                                | English          |
+| Samoa                                | Samoan           |
+| Yemen                                | Arabic           |
+| Yugoslavia                           | Serbo-Croatian   |
+| South Africa                         | Afrikaans        |
+| South Africa                         | English          |
+| South Africa                         | Xhosa            |
+| South Africa                         | Zulu             |
+| Zimbabwe                             | English          |
++--------------------------------------+------------------+
+238 rows in set (0.00 sec)
+
+mysql> select name,language from country inner join  countrylanguage on country.code=countrylanguage.countrycode where isofficialind='E';
+ERROR 1054 (42S22): Unknown column 'isofficialind' in 'where clause'
+mysql> select country.name,clan1.language from country inner join countrylanguage clan1
+    -> on country.code=clan1.countrycode wher clan1.language='english' and
+    -> code=(select clan2.countrycode from countrylanguage clan2 where clan2.countrycode=clan1.count
+    -> countrycode and clan2.isofficial='T' group by clan2.countrycode havinh count(clan2.language)=1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'wher clan1.language='english' and
+code=(select clan2.countrycode from countrylan' at line 2
+mysql> select country.name,clan1.language from country inner join countrylanguage clan1
+    -> select name,language from country inner join  countrylanguage on country.code=countrylanguage.countrycode where isofficialind='E';on country.code=clan1.countrycode wher clan1.language='english' and^Z^Z
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select name,language from country inner join  countrylanguage on country.code=co' at line 2
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on country.code=clan1.countrycode wher clan1.language='english' and' at line 1
+mysql>  select country.name,clan1.language from country inner join countrylanguage clan1
+    -> on country.code=clan1.countrycode where clan1.language='english' and
+    -> code=(select clan2.countrycode from countrylanguage clan2 where clan2.countrycode=clan1.count
+    -> countrycode and clan2.isofficial='T' group by clan2.countrycode havinh count(clan2.language)=1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'countrycode and clan2.isofficial='T' group by clan2.countrycode havinh count(cla' at line 4
+mysql> select country.name,clan1.language from country inner join countrylanguage clan1
+    -> on country.code=clan1.countrycode where clan1.language='english' and
+    ->  code=(select clan2.countrycode from countrylanguage clan2 where clan2.countrycode=clan1.count
+    -> countrycode and clan2.isofficial='T' group by clan2.countrycode having count(clan2.language)=1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'countrycode and clan2.isofficial='T' group by clan2.countrycode having count(cla' at line 4
+mysql> select country.name,clan1.language from country inner join countrylanguage clan1
+    -> on country.code=clan1.countrycode where clan1.language='english' and
+    -> code=(select clan2.countrycode from countrylanguage clan2 where clan2.countrycode=clan1.count
+    -> countrycode and clan2.isofficial='T' group by clan2.countrycode havinh count(clan2.language)=1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'countrycode and clan2.isofficial='T' group by clan2.countrycode havinh count(cla' at line 4
+mysql> select country.name,clan1.language from country inner join countrylanguage clan1
+    -> on country.code=clan1.countrycode where clan1.language='english' and
+    -> code=(select clan2.countrycode from countrylanguage clan2 where clan2.countrycode=clan1.
+    -> countrycode and clan2.isofficial='T' group by clan2.countrycode havinh count(clan2.language)=1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'havinh count(clan2.language)=1)' at line 4
+mysql>  select country.name,clan1.language from country inner join countrylanguage clan1
+    -> on country.code=clan1.countrycode where clan1.language='english' and
+    ->  code=(select clan2.countrycode from countrylanguage clan2 where clan2.countrycode=clan1.
+    ->  countrycode and clan2.isofficial='T' group by clan2.countrycode having count(clan2.language)=1);
++--------------------------------------+----------+
+| name                                 | language |
++--------------------------------------+----------+
+| Aruba                                | English  |
+| Anguilla                             | English  |
+| Antigua and Barbuda                  | English  |
+| Australia                            | English  |
+| Bahrain                              | English  |
+| Belize                               | English  |
+| Bermuda                              | English  |
+| Barbados                             | English  |
+| Brunei                               | English  |
+| Cocos (Keeling) Islands              | English  |
+| Cook Islands                         | English  |
+| Christmas Island                     | English  |
+| Cayman Islands                       | English  |
+| Denmark                              | English  |
+| Falkland Islands                     | English  |
+| United Kingdom                       | English  |
+| Gibraltar                            | English  |
+| Hong Kong                            | English  |
+| Iceland                              | English  |
+| Japan                                | English  |
+| Saint Kitts and Nevis                | English  |
+| Kuwait                               | English  |
+| Saint Lucia                          | English  |
+| Macao                                | English  |
+| Monaco                               | English  |
+| Maldives                             | English  |
+| Northern Mariana Islands             | English  |
+| Montserrat                           | English  |
+| Malaysia                             | English  |
+| Norfolk Island                       | English  |
+| Niue                                 | English  |
+| Norway                               | English  |
+| New Zealand                          | English  |
+| Puerto Rico                          | English  |
+| Saint Helena                         | English  |
+| Turks and Caicos Islands             | English  |
+| Tokelau                              | English  |
+| United States Minor Outlying Islands | English  |
+| United States                        | English  |
+| Saint Vincent and the Grenadines     | English  |
+| Virgin Islands, British              | English  |
+| Virgin Islands, U.S.                 | English  |
+| Zimbabwe                             | English  |
++--------------------------------------+----------+
+43 rows in set (0.06 sec)
+
+mysql> -- fetch countryname,count of cities where country with  0 cities;
+mysql> select country.name,count(city.id) from country left join city
+    -> on country.code=city.countrycode group by country.code having count(city.id)=0;
++----------------------------------------------+----------------+
+| name                                         | count(city.id) |
++----------------------------------------------+----------------+
+| Antarctica                                   |              0 |
+| French Southern territories                  |              0 |
+| Bouvet Island                                |              0 |
+| Heard Island and McDonald Islands            |              0 |
+| British Indian Ocean Territory               |              0 |
+| South Georgia and the South Sandwich Islands |              0 |
+| United States Minor Outlying Islands         |              0 |
++----------------------------------------------+----------------+
+7 rows in set (0.02 sec)
+
+mysql>
