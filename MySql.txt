@@ -18160,3 +18160,304 @@ mysql> select country.name,count(city.id) from country left join city
 7 rows in set (0.02 sec)
 
 mysql>
+
+
+
+
+
+
+---------------------16-04-2026---------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8246]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| relation_info      |
+| sample_data        |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.07 sec)
+
+mysql> use extra_data;
+Database changed
+mysql> select * from dept;
++------+-----------+
+| d_id | dept_name |
++------+-----------+
+|    3 | eng       |
+|    2 | hin       |
+|    4 | math      |
+|    5 | sci       |
+|    1 | tel       |
++------+-----------+
+5 rows in set (0.03 sec)
+
+mysql> select * from faculty;
++------+---------+--------+------------+---------+-------------------+
+| f_id | f_name  | salary | doj        | dept_id | email_id          |
++------+---------+--------+------------+---------+-------------------+
+|  101 | anusha  |  50000 | 2022-11-02 |       1 | anusha@gmail.com  |
+|  102 | sam     |  50000 | 2025-09-02 |       1 | sam@gmail.com     |
+|  103 | ram     |  45000 | 2025-09-02 |       2 | ram@gmail.com     |
+|  104 | ali     |  30000 | 2022-03-01 |       3 | ali@gmail.com     |
+|  105 | ravi    |  80000 | 2018-03-01 |       3 | ravi@gmail.com    |
+|  106 | jhon    |  45000 | 2020-06-01 |       3 | jhon@gmail.com    |
+|  107 | ram     |  25000 | 2025-09-02 |       4 | ram@gmail.com     |
+|  108 | smith   |  60000 | 2021-07-20 |       4 | smith@gmail.com   |
+|  109 | william |  33000 | 2026-03-02 |    NULL | william@gmail.com |
++------+---------+--------+------------+---------+-------------------+
+9 rows in set (0.01 sec)
+
+mysql> -- fetch employee details with no dept
+mysql> select * from dept roght join faculty on dept.d_id=faculty.dept_id
+    -> where dept_id is null;
+ERROR 1054 (42S22): Unknown column 'dept.d_id' in 'on clause'
+mysql> select * from dept right join faculty on dept.d_id=faculty.dept_id
+    -> where dept_id is null;
++------+-----------+------+---------+--------+------------+---------+-------------------+
+| d_id | dept_name | f_id | f_name  | salary | doj        | dept_id | email_id          |
++------+-----------+------+---------+--------+------------+---------+-------------------+
+| NULL | NULL      |  109 | william |  33000 | 2026-03-02 |    NULL | william@gmail.com |
++------+-----------+------+---------+--------+------------+---------+-------------------+
+1 row in set (0.01 sec)
+
+mysql> select * from dept right join faculty on dept.d_id=faculty.dept_id;
++------+-----------+------+---------+--------+------------+---------+-------------------+
+| d_id | dept_name | f_id | f_name  | salary | doj        | dept_id | email_id          |
++------+-----------+------+---------+--------+------------+---------+-------------------+
+|    1 | tel       |  101 | anusha  |  50000 | 2022-11-02 |       1 | anusha@gmail.com  |
+|    1 | tel       |  102 | sam     |  50000 | 2025-09-02 |       1 | sam@gmail.com     |
+|    2 | hin       |  103 | ram     |  45000 | 2025-09-02 |       2 | ram@gmail.com     |
+|    3 | eng       |  104 | ali     |  30000 | 2022-03-01 |       3 | ali@gmail.com     |
+|    3 | eng       |  105 | ravi    |  80000 | 2018-03-01 |       3 | ravi@gmail.com    |
+|    3 | eng       |  106 | jhon    |  45000 | 2020-06-01 |       3 | jhon@gmail.com    |
+|    4 | math      |  107 | ram     |  25000 | 2025-09-02 |       4 | ram@gmail.com     |
+|    4 | math      |  108 | smith   |  60000 | 2021-07-20 |       4 | smith@gmail.com   |
+| NULL | NULL      |  109 | william |  33000 | 2026-03-02 |    NULL | william@gmail.com |
++------+-----------+------+---------+--------+------------+---------+-------------------+
+9 rows in set (0.00 sec)
+
+mysql> -- fetch product name which not order the anyone;
+mysql> select * from order details;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order details' at line 1
+mysql> select * from order_details;
++---------------+---------+-----------+----------+
+| OrderDetailID | OrderID | ProductID | Quantity |
++---------------+---------+-----------+----------+
+|             1 |       1 |       101 |        2 |
+|             2 |       2 |       102 |        1 |
+|             3 |       3 |       104 |        3 |
+|             4 |       4 |       103 |        1 |
+|             5 |       5 |       105 |        2 |
+|             6 |       6 |       104 |        3 |
++---------------+---------+-----------+----------+
+6 rows in set (0.02 sec)
+
+mysql> select * from product;
++-----------+-------------+---------+
+| ProductID | ProductName | Price   |
++-----------+-------------+---------+
+|       101 | Phone       |  600.00 |
+|       102 | Laptop      | 1200.00 |
+|       103 | Tablet      |  800.00 |
+|       104 | Headphones  |  100.00 |
+|       105 | Monitor     |  500.00 |
++-----------+-------------+---------+
+5 rows in set (0.02 sec)
+
+mysql> select * from order_details right join product on order_details.productid=product.productid;
++---------------+---------+-----------+----------+-----------+-------------+---------+
+| OrderDetailID | OrderID | ProductID | Quantity | ProductID | ProductName | Price   |
++---------------+---------+-----------+----------+-----------+-------------+---------+
+|             1 |       1 |       101 |        2 |       101 | Phone       |  600.00 |
+|             2 |       2 |       102 |        1 |       102 | Laptop      | 1200.00 |
+|             4 |       4 |       103 |        1 |       103 | Tablet      |  800.00 |
+|             3 |       3 |       104 |        3 |       104 | Headphones  |  100.00 |
+|             6 |       6 |       104 |        3 |       104 | Headphones  |  100.00 |
+|             5 |       5 |       105 |        2 |       105 | Monitor     |  500.00 |
++---------------+---------+-----------+----------+-----------+-------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from order_details right join product on order_details.productid=product.productid where order is null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order is null' at line 1
+mysql> select * from order_details right join product on order_details.productid=product.productid where orderid is null;
+Empty set (0.03 sec)
+
+mysql> -- fetch customers name who are from same city
+mysql> select * from customers;
++------------+---------+------+-------------+
+| CustomerID | Name    | Age  | City        |
++------------+---------+------+-------------+
+|          1 | Alice   |   30 | New York    |
+|          2 | Bob     |   25 | Los Angeles |
+|          3 | Charlie |   35 | Chicago     |
+|          4 | David   |   40 | Houston     |
+|          5 | jhon    |   35 | New York    |
++------------+---------+------+-------------+
+5 rows in set (0.02 sec)
+
+mysql> select c1.name,c1.city from customers c1 inner join customers c2 on
+    -> c1.city=c2.city and c1.customerid!=c2.customerid;
++-------+----------+
+| name  | city     |
++-------+----------+
+| jhon  | New York |
+| Alice | New York |
++-------+----------+
+2 rows in set (0.00 sec)
+
+mysql> -- fetch employee details joined at same date
+mysql> select * from faaculty;
+ERROR 1146 (42S02): Table 'extra_data.faaculty' doesn't exist
+mysql> select * from faculty;
++------+---------+--------+------------+---------+-------------------+
+| f_id | f_name  | salary | doj        | dept_id | email_id          |
++------+---------+--------+------------+---------+-------------------+
+|  101 | anusha  |  50000 | 2022-11-02 |       1 | anusha@gmail.com  |
+|  102 | sam     |  50000 | 2025-09-02 |       1 | sam@gmail.com     |
+|  103 | ram     |  45000 | 2025-09-02 |       2 | ram@gmail.com     |
+|  104 | ali     |  30000 | 2022-03-01 |       3 | ali@gmail.com     |
+|  105 | ravi    |  80000 | 2018-03-01 |       3 | ravi@gmail.com    |
+|  106 | jhon    |  45000 | 2020-06-01 |       3 | jhon@gmail.com    |
+|  107 | ram     |  25000 | 2025-09-02 |       4 | ram@gmail.com     |
+|  108 | smith   |  60000 | 2021-07-20 |       4 | smith@gmail.com   |
+|  109 | william |  33000 | 2026-03-02 |    NULL | william@gmail.com |
++------+---------+--------+------------+---------+-------------------+
+9 rows in set (0.00 sec)
+
+mysql> select distinct f1.f_name,f1.doj,f1.dept_id from faculty f1 inner join faculty f2
+    -> on f1.doj=f2.doj and f1.f_id!=f2.f_id;
++--------+------------+---------+
+| f_name | doj        | dept_id |
++--------+------------+---------+
+| ram    | 2025-09-02 |       4 |
+| ram    | 2025-09-02 |       2 |
+| sam    | 2025-09-02 |       1 |
++--------+------------+---------+
+3 rows in set (0.01 sec)
+
+mysql> select name from customers
+    -> union
+    -> select productname from product;
++------------+
+| name       |
++------------+
+| Alice      |
+| Bob        |
+| Charlie    |
+| David      |
+| jhon       |
+| Phone      |
+| Laptop     |
+| Tablet     |
+| Headphones |
+| Monitor    |
++------------+
+10 rows in set (0.01 sec)
+
+mysql> -- fetch all customer naem and all the product name even though
+mysql> -- customers with no orders with product with no order details;
+mysql> select name,productname from customers left join orders
+    -> on customers.customerid=orders.customerid left join
+    -> order_details on order_details.orderid=orders.orderid left join
+    -> product on order_details.productid=product.productid
+    -> union all
+    -> order_details on order_details.orderid=orders.orderid right join
+    -> on customers.customerid=orders.customerid right join
+    -> order_details on order_details.orderid=orders.orderid right join
+    -> product on order_details.productid=product.productid
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order_details on order_details.orderid=orders.orderid right join
+on customers.cu' at line 6
+mysql> select name,productname from customers left join orders
+    -> on customers.customerid=orders.customerid left join
+    ->  order_details on order_details.orderid=orders.orderid left join
+    -> product on order_details.productid=product.productid
+    -> union all
+    -> select name,productname from customers right join orders
+    ->  on customers.customerid=orders.customerid right join
+    -> order_details on order_details.orderid=orders.orderid right join
+    -> product on order_details.productid=product.productid;
++---------+-------------+
+| name    | productname |
++---------+-------------+
+| Alice   | Phone       |
+| Alice   | Tablet      |
+| Alice   | Headphones  |
+| Bob     | Laptop      |
+| Charlie | Headphones  |
+| David   | Monitor     |
+| jhon    | NULL        |
+| Alice   | Phone       |
+| Bob     | Laptop      |
+| Alice   | Tablet      |
+| Charlie | Headphones  |
+| Alice   | Headphones  |
+| David   | Monitor     |
++---------+-------------+
+13 rows in set (0.02 sec)
+
+mysql> select name,productname from customers left join orders
+    ->      on customers.customerid=orders.customerid left join
+    ->       order_details on order_details.orderid=orders.orderid left join
+    ->      product on order_details.productid=product.productid
+    ->      union
+    ->     select name,productname from customers right join orders
+    ->       on customers.customerid=orders.customerid right join
+    ->      order_details on order_details.orderid=orders.orderid right join
+    ->      product on order_details.productid=product.productid;
++---------+-------------+
+| name    | productname |
++---------+-------------+
+| Alice   | Phone       |
+| Alice   | Tablet      |
+| Alice   | Headphones  |
+| Bob     | Laptop      |
+| Charlie | Headphones  |
+| David   | Monitor     |
+| jhon    | NULL        |
++---------+-------------+
+7 rows in set (0.00 sec)
+
+mysql>
