@@ -18461,3 +18461,649 @@ mysql> select name,productname from customers left join orders
 7 rows in set (0.00 sec)
 
 mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------17-04-2026----------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8246]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| relation_info      |
+| sample_data        |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.05 sec)
+
+mysql> use extra_data;
+Database changed
+mysql> select * from customers cross join product;
++------------+---------+------+-------------+-----------+-------------+---------+
+| CustomerID | Name    | Age  | City        | ProductID | ProductName | Price   |
++------------+---------+------+-------------+-----------+-------------+---------+
+|          5 | jhon    |   35 | New York    |       101 | Phone       |  600.00 |
+|          4 | David   |   40 | Houston     |       101 | Phone       |  600.00 |
+|          3 | Charlie |   35 | Chicago     |       101 | Phone       |  600.00 |
+|          2 | Bob     |   25 | Los Angeles |       101 | Phone       |  600.00 |
+|          1 | Alice   |   30 | New York    |       101 | Phone       |  600.00 |
+|          5 | jhon    |   35 | New York    |       102 | Laptop      | 1200.00 |
+|          4 | David   |   40 | Houston     |       102 | Laptop      | 1200.00 |
+|          3 | Charlie |   35 | Chicago     |       102 | Laptop      | 1200.00 |
+|          2 | Bob     |   25 | Los Angeles |       102 | Laptop      | 1200.00 |
+|          1 | Alice   |   30 | New York    |       102 | Laptop      | 1200.00 |
+|          5 | jhon    |   35 | New York    |       103 | Tablet      |  800.00 |
+|          4 | David   |   40 | Houston     |       103 | Tablet      |  800.00 |
+|          3 | Charlie |   35 | Chicago     |       103 | Tablet      |  800.00 |
+|          2 | Bob     |   25 | Los Angeles |       103 | Tablet      |  800.00 |
+|          1 | Alice   |   30 | New York    |       103 | Tablet      |  800.00 |
+|          5 | jhon    |   35 | New York    |       104 | Headphones  |  100.00 |
+|          4 | David   |   40 | Houston     |       104 | Headphones  |  100.00 |
+|          3 | Charlie |   35 | Chicago     |       104 | Headphones  |  100.00 |
+|          2 | Bob     |   25 | Los Angeles |       104 | Headphones  |  100.00 |
+|          1 | Alice   |   30 | New York    |       104 | Headphones  |  100.00 |
+|          5 | jhon    |   35 | New York    |       105 | Monitor     |  500.00 |
+|          4 | David   |   40 | Houston     |       105 | Monitor     |  500.00 |
+|          3 | Charlie |   35 | Chicago     |       105 | Monitor     |  500.00 |
+|          2 | Bob     |   25 | Los Angeles |       105 | Monitor     |  500.00 |
+|          1 | Alice   |   30 | New York    |       105 | Monitor     |  500.00 |
++------------+---------+------+-------------+-----------+-------------+---------+
+25 rows in set (0.00 sec)
+
+mysql> -- fetch customername,productname,amount spent the product;
+mysql> select name,productname,sum(price*quantity) from customers cross join product
+    -> left join order on customers.orderid=orders.customerid left join
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order on customers.orderid=orders.customerid left join' at line 2
+mysql> select name,productname,sum(price*quantity) from customers cross join product
+    -> left join orders on customers.orderid=orders.customerid left join
+    -> order_details on order_details.orderid=orders.orderid
+    -> and order_details.productid=product.productid;
+ERROR 1054 (42S22): Unknown column 'customers.orderid' in 'on clause'
+mysql> select distinict name,productname,sum(price*quantity) from customers cross join product
+    -> left join orders on customers.orderid=orders.customerid left join
+    ->     order_details on order_details.orderid=orders.orderid
+    ->     and order_details.productid=product.productid;
+ERROR 1054 (42S22): Unknown column 'distinict' in 'field list'
+mysql> select distinct name,productname,sum(price*quantity) from customers cross join product
+    -> left join orders on customers.orderid=orders.customerid left join
+    ->     order_details on order_details.orderid=orders.orderid
+    ->     and order_details.productid=product.productid;
+ERROR 1054 (42S22): Unknown column 'customers.orderid' in 'on clause'
+mysql> select distinct name,productname,(price*quantity) from customers cross join product
+    -> left join orders on customers.orderid=orders.customerid left join
+    ->     order_details on order_details.orderid=orders.orderid
+    ->     and order_details.productid=product.productid;
+ERROR 1054 (42S22): Unknown column 'customers.orderid' in 'on clause'
+mysql> select distinct name,productname,(price*quantity) from customers cross join product
+    ->  left join orders on customers.customerid=orders.customerid left join
+    ->     order_details on order_details.orderid=orders.orderid
+    ->     and order_details.productid=product.productid;
++---------+-------------+------------------+
+| name    | productname | (price*quantity) |
++---------+-------------+------------------+
+| jhon    | Phone       |             NULL |
+| David   | Phone       |             NULL |
+| Charlie | Phone       |             NULL |
+| Bob     | Phone       |             NULL |
+| Alice   | Phone       |             NULL |
+| Alice   | Phone       |          1200.00 |
+| jhon    | Laptop      |             NULL |
+| David   | Laptop      |             NULL |
+| Charlie | Laptop      |             NULL |
+| Bob     | Laptop      |          1200.00 |
+| Alice   | Laptop      |             NULL |
+| jhon    | Tablet      |             NULL |
+| David   | Tablet      |             NULL |
+| Charlie | Tablet      |             NULL |
+| Bob     | Tablet      |             NULL |
+| Alice   | Tablet      |             NULL |
+| Alice   | Tablet      |           800.00 |
+| jhon    | Headphones  |             NULL |
+| David   | Headphones  |             NULL |
+| Charlie | Headphones  |           300.00 |
+| Bob     | Headphones  |             NULL |
+| Alice   | Headphones  |           300.00 |
+| Alice   | Headphones  |             NULL |
+| jhon    | Monitor     |             NULL |
+| David   | Monitor     |          1000.00 |
+| Charlie | Monitor     |             NULL |
+| Bob     | Monitor     |             NULL |
+| Alice   | Monitor     |             NULL |
++---------+-------------+------------------+
+28 rows in set (0.01 sec)
+
+mysql> use world
+Database changed
+mysql> data base changed
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'data base changed' at line 1
+mysql> -- fetch all combinations country  name, language,percentage;
+mysql> desc country;
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+| Field          | Type                                                                                  | Null | Key | Default | Extra |
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+| Code           | char(3)                                                                               | NO   | PRI |         |       |
+| Name           | char(52)                                                                              | NO   |     |         |       |
+| Continent      | enum('Asia','Europe','North America','Africa','Oceania','Antarctica','South America') | NO   |     | Asia    |       |
+| Region         | char(26)                                                                              | NO   |     |         |       |
+| SurfaceArea    | decimal(10,2)                                                                         | NO   |     | 0.00    |       |
+| IndepYear      | smallint                                                                              | YES  |     | NULL    |       |
+| Population     | int                                                                                   | NO   |     | 0       |       |
+| LifeExpectancy | decimal(3,1)                                                                          | YES  |     | NULL    |       |
+| GNP            | decimal(10,2)                                                                         | YES  |     | NULL    |       |
+| GNPOld         | decimal(10,2)                                                                         | YES  |     | NULL    |       |
+| LocalName      | char(45)                                                                              | NO   |     |         |       |
+| GovernmentForm | char(45)                                                                              | NO   |     |         |       |
+| HeadOfState    | char(60)                                                                              | YES  |     | NULL    |       |
+| Capital        | int                                                                                   | YES  |     | NULL    |       |
+| Code2          | char(2)                                                                               | NO   |     |         |       |
++----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+15 rows in set (0.05 sec)
+
+mysql> desc countrylanguage;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| CountryCode | char(3)       | NO   | PRI |         |       |
+| Language    | char(30)      | NO   | PRI |         |       |
+| IsOfficial  | enum('T','F') | NO   |     | F       |       |
+| Percentage  | decimal(4,1)  | NO   |     | 0.0     |       |
++-------------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> this  can be done by inner join in my sql
+    -> this is also can be done by using in operator in sub query
+    -> this is also can be done by exists in sub query;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'this  can be done by inner join in my sql
+this is also can be done by using in o' at line 1
+mysql> select customerid from customers
+    -> intersect
+    -> select customerid from orders;
+ERROR 1146 (42S02): Table 'world.customers' doesn't exist
+mysql> use extra_data;
+Database changed
+mysql> select customerid from customers
+    -> intersect
+    -> select customerid from orders;
++------------+
+| customerid |
++------------+
+|          1 |
+|          2 |
+|          3 |
+|          4 |
++------------+
+4 rows in set (0.00 sec)
+
+mysql> select customerid from customers where exists
+    -> (select 1 from order wher orders.customerid=customers.customerid);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order wher orders.customerid=customers.customerid)' at line 2
+mysql> select customerid from customers where exists
+    -> (select 1 from orders where orders.customerid=customers.customerid);
++------------+
+| customerid |
++------------+
+|          1 |
+|          2 |
+|          3 |
+|          4 |
++------------+
+4 rows in set (0.03 sec)
+
+mysql> select distinct customerid from customers where customerid in
+    -> (select customerid from orders);
++------------+
+| customerid |
++------------+
+|          1 |
+|          2 |
+|          3 |
+|          4 |
++------------+
+4 rows in set (0.00 sec)
+
+mysql> use extra_data;
+Database changed
+mysql> select customerid from customers;
++------------+
+| customerid |
++------------+
+|          1 |
+|          2 |
+|          3 |
+|          4 |
+|          5 |
++------------+
+5 rows in set (0.00 sec)
+
+mysql> select customerid from customers
+    -> expect
+    -> select customerid from orders;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select customerid from orders' at line 3
+mysql> select customerid from customers
+    -> except
+    -> select customerid from orders;
++------------+
+| customerid |
++------------+
+|          5 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> -- not in subquery
+mysql> -- left join
+mysql> -- not exists
+mysql> use world;
+Database changed
+mysql> create view india_cities as
+    -> select city.name as cityname,country.name as countryname from country inner join city
+    -> on city.countrycode=country.code wher country.name='india';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'wher country.name='india'' at line 3
+mysql> select city.name as cityname,country.name as countryname from country inner join city
+    -> on city.countrycode=country.code where country.name='india';
++--------------------------------+-------------+
+| cityname                       | countryname |
++--------------------------------+-------------+
+| Mumbai (Bombay)                | India       |
+| Delhi                          | India       |
+| Calcutta [Kolkata]             | India       |
+| Chennai (Madras)               | India       |
+| Hyderabad                      | India       |
+| Ahmedabad                      | India       |
+| Bangalore                      | India       |
+| Kanpur                         | India       |
+| Nagpur                         | India       |
+| Lucknow                        | India       |
+| Pune                           | India       |
+| Surat                          | India       |
+| Jaipur                         | India       |
+| Indore                         | India       |
+| Bhopal                         | India       |
+| Ludhiana                       | India       |
+| Vadodara (Baroda)              | India       |
+| Kalyan                         | India       |
+| Madurai                        | India       |
+| Haora (Howrah)                 | India       |
+| Varanasi (Benares)             | India       |
+| Patna                          | India       |
+| Srinagar                       | India       |
+| Agra                           | India       |
+| Coimbatore                     | India       |
+| Thane (Thana)                  | India       |
+| Allahabad                      | India       |
+| Meerut                         | India       |
+| Vishakhapatnam                 | India       |
+| Jabalpur                       | India       |
+| Amritsar                       | India       |
+| Faridabad                      | India       |
+| Vijayawada                     | India       |
+| Gwalior                        | India       |
+| Jodhpur                        | India       |
+| Nashik (Nasik)                 | India       |
+| Hubli-Dharwad                  | India       |
+| Solapur (Sholapur)             | India       |
+| Ranchi                         | India       |
+| Bareilly                       | India       |
+| Guwahati (Gauhati)             | India       |
+| Shambajinagar (Aurangabad)     | India       |
+| Cochin (Kochi)                 | India       |
+| Rajkot                         | India       |
+| Kota                           | India       |
+| Thiruvananthapuram (Trivandrum | India       |
+| Pimpri-Chinchwad               | India       |
+| Jalandhar (Jullundur)          | India       |
+| Gorakhpur                      | India       |
+| Chandigarh                     | India       |
+| Mysore                         | India       |
+| Aligarh                        | India       |
+| Guntur                         | India       |
+| Jamshedpur                     | India       |
+| Ghaziabad                      | India       |
+| Warangal                       | India       |
+| Raipur                         | India       |
+| Moradabad                      | India       |
+| Durgapur                       | India       |
+| Amravati                       | India       |
+| Calicut (Kozhikode)            | India       |
+| Bikaner                        | India       |
+| Bhubaneswar                    | India       |
+| Kolhapur                       | India       |
+| Kataka (Cuttack)               | India       |
+| Ajmer                          | India       |
+| Bhavnagar                      | India       |
+| Tiruchirapalli                 | India       |
+| Bhilai                         | India       |
+| Bhiwandi                       | India       |
+| Saharanpur                     | India       |
+| Ulhasnagar                     | India       |
+| Salem                          | India       |
+| Ujjain                         | India       |
+| Malegaon                       | India       |
+| Jamnagar                       | India       |
+| Bokaro Steel City              | India       |
+| Akola                          | India       |
+| Belgaum                        | India       |
+| Rajahmundry                    | India       |
+| Nellore                        | India       |
+| Udaipur                        | India       |
+| New Bombay                     | India       |
+| Bhatpara                       | India       |
+| Gulbarga                       | India       |
+| New Delhi                      | India       |
+| Jhansi                         | India       |
+| Gaya                           | India       |
+| Kakinada                       | India       |
+| Dhule (Dhulia)                 | India       |
+| Panihati                       | India       |
+| Nanded (Nander)                | India       |
+| Mangalore                      | India       |
+| Dehra Dun                      | India       |
+| Kamarhati                      | India       |
+| Davangere                      | India       |
+| Asansol                        | India       |
+| Bhagalpur                      | India       |
+| Bellary                        | India       |
+| Barddhaman (Burdwan)           | India       |
+| Rampur                         | India       |
+| Jalgaon                        | India       |
+| Muzaffarpur                    | India       |
+| Nizamabad                      | India       |
+| Muzaffarnagar                  | India       |
+| Patiala                        | India       |
+| Shahjahanpur                   | India       |
+| Kurnool                        | India       |
+| Tiruppur (Tirupper)            | India       |
+| Rohtak                         | India       |
+| South Dum Dum                  | India       |
+| Mathura                        | India       |
+| Chandrapur                     | India       |
+| Barahanagar (Baranagar)        | India       |
+| Darbhanga                      | India       |
+| Siliguri (Shiliguri)           | India       |
+| Raurkela                       | India       |
+| Ambattur                       | India       |
+| Panipat                        | India       |
+| Firozabad                      | India       |
+| Ichalkaranji                   | India       |
+| Jammu                          | India       |
+| Ramagundam                     | India       |
+| Eluru                          | India       |
+| Brahmapur                      | India       |
+| Alwar                          | India       |
+| Pondicherry                    | India       |
+| Thanjavur                      | India       |
+| Bihar Sharif                   | India       |
+| Tuticorin                      | India       |
+| Imphal                         | India       |
+| Latur                          | India       |
+| Sagar                          | India       |
+| Farrukhabad-cum-Fatehgarh      | India       |
+| Sangli                         | India       |
+| Parbhani                       | India       |
+| Nagar Coil                     | India       |
+| Bijapur                        | India       |
+| Kukatpalle                     | India       |
+| Bally                          | India       |
+| Bhilwara                       | India       |
+| Ratlam                         | India       |
+| Avadi                          | India       |
+| Dindigul                       | India       |
+| Ahmadnagar                     | India       |
+| Bilaspur                       | India       |
+| Shimoga                        | India       |
+| Kharagpur                      | India       |
+| Mira Bhayandar                 | India       |
+| Vellore                        | India       |
+| Jalna                          | India       |
+| Burnpur                        | India       |
+| Anantapur                      | India       |
+| Allappuzha (Alleppey)          | India       |
+| Tirupati                       | India       |
+| Karnal                         | India       |
+| Burhanpur                      | India       |
+| Hisar (Hissar)                 | India       |
+| Tiruvottiyur                   | India       |
+| Mirzapur-cum-Vindhyachal       | India       |
+| Secunderabad                   | India       |
+| Nadiad                         | India       |
+| Dewas                          | India       |
+| Murwara (Katni)                | India       |
+| Ganganagar                     | India       |
+| Vizianagaram                   | India       |
+| Erode                          | India       |
+| Machilipatnam (Masulipatam)    | India       |
+| Bhatinda (Bathinda)            | India       |
+| Raichur                        | India       |
+| Agartala                       | India       |
+| Arrah (Ara)                    | India       |
+| Satna                          | India       |
+| Lalbahadur Nagar               | India       |
+| Aizawl                         | India       |
+| Uluberia                       | India       |
+| Katihar                        | India       |
+| Cuddalore                      | India       |
+| Hugli-Chinsurah                | India       |
+| Dhanbad                        | India       |
+| Raiganj                        | India       |
+| Sambhal                        | India       |
+| Durg                           | India       |
+| Munger (Monghyr)               | India       |
+| Kanchipuram                    | India       |
+| North Dum Dum                  | India       |
+| Karimnagar                     | India       |
+| Bharatpur                      | India       |
+| Sikar                          | India       |
+| Hardwar (Haridwar)             | India       |
+| Dabgram                        | India       |
+| Morena                         | India       |
+| Noida                          | India       |
+| Hapur                          | India       |
+| Bhusawal                       | India       |
+| Khandwa                        | India       |
+| Yamuna Nagar                   | India       |
+| Sonipat (Sonepat)              | India       |
+| Tenali                         | India       |
+| Raurkela Civil Township        | India       |
+| Kollam (Quilon)                | India       |
+| Kumbakonam                     | India       |
+| Ingraj Bazar (English Bazar)   | India       |
+| Timkur                         | India       |
+| Amroha                         | India       |
+| Serampore                      | India       |
+| Chapra                         | India       |
+| Pali                           | India       |
+| Maunath Bhanjan                | India       |
+| Adoni                          | India       |
+| Jaunpur                        | India       |
+| Tirunelveli                    | India       |
+| Bahraich                       | India       |
+| Gadag Betigeri                 | India       |
+| Proddatur                      | India       |
+| Chittoor                       | India       |
+| Barrackpur                     | India       |
+| Bharuch (Broach)               | India       |
+| Naihati                        | India       |
+| Shillong                       | India       |
+| Sambalpur                      | India       |
+| Junagadh                       | India       |
+| Rae Bareli                     | India       |
+| Rewa                           | India       |
+| Gurgaon                        | India       |
+| Khammam                        | India       |
+| Bulandshahr                    | India       |
+| Navsari                        | India       |
+| Malkajgiri                     | India       |
+| Midnapore (Medinipur)          | India       |
+| Miraj                          | India       |
+| Raj Nandgaon                   | India       |
+| Alandur                        | India       |
+| Puri                           | India       |
+| Navadwip                       | India       |
+| Sirsa                          | India       |
+| Korba                          | India       |
+| Faizabad                       | India       |
+| Etawah                         | India       |
+| Pathankot                      | India       |
+| Gandhinagar                    | India       |
+| Palghat (Palakkad)             | India       |
+| Veraval                        | India       |
+| Hoshiarpur                     | India       |
+| Ambala                         | India       |
+| Sitapur                        | India       |
+| Bhiwani                        | India       |
+| Cuddapah                       | India       |
+| Bhimavaram                     | India       |
+| Krishnanagar                   | India       |
+| Chandannagar                   | India       |
+| Mandya                         | India       |
+| Dibrugarh                      | India       |
+| Nandyal                        | India       |
+| Balurghat                      | India       |
+| Neyveli                        | India       |
+| Fatehpur                       | India       |
+| Mahbubnagar                    | India       |
+| Budaun                         | India       |
+| Porbandar                      | India       |
+| Silchar                        | India       |
+| Berhampore (Baharampur)        | India       |
+| Purnea (Purnia)                | India       |
+| Bankura                        | India       |
+| Rajapalaiyam                   | India       |
+| Titagarh                       | India       |
+| Halisahar                      | India       |
+| Hathras                        | India       |
+| Bhir (Bid)                     | India       |
+| Pallavaram                     | India       |
+| Anand                          | India       |
+| Mango                          | India       |
+| Santipur                       | India       |
+| Bhind                          | India       |
+| Gondiya                        | India       |
+| Tiruvannamalai                 | India       |
+| Yeotmal (Yavatmal)             | India       |
+| Kulti-Barakar                  | India       |
+| Moga                           | India       |
+| Shivapuri                      | India       |
+| Bidar                          | India       |
+| Guntakal                       | India       |
+| Unnao                          | India       |
+| Barasat                        | India       |
+| Tambaram                       | India       |
+| Abohar                         | India       |
+| Pilibhit                       | India       |
+| Valparai                       | India       |
+| Gonda                          | India       |
+| Surendranagar                  | India       |
+| Qutubullapur                   | India       |
+| Beawar                         | India       |
+| Hindupur                       | India       |
+| Gandhidham                     | India       |
+| Haldwani-cum-Kathgodam         | India       |
+| Tellicherry (Thalassery)       | India       |
+| Wardha                         | India       |
+| Rishra                         | India       |
+| Bhuj                           | India       |
+| Modinagar                      | India       |
+| Gudivada                       | India       |
+| Basirhat                       | India       |
+| Uttarpara-Kotrung              | India       |
+| Ongole                         | India       |
+| North Barrackpur               | India       |
+| Guna                           | India       |
+| Haldia                         | India       |
+| Habra                          | India       |
+| Kanchrapara                    | India       |
+| Tonk                           | India       |
+| Champdani                      | India       |
+| Orai                           | India       |
+| Pudukkottai                    | India       |
+| Sasaram                        | India       |
+| Hazaribag                      | India       |
+| Palayankottai                  | India       |
+| Banda                          | India       |
+| Godhra                         | India       |
+| Hospet                         | India       |
+| Ashoknagar-Kalyangarh          | India       |
+| Achalpur                       | India       |
+| Patan                          | India       |
+| Mandasor                       | India       |
+| Damoh                          | India       |
+| Satara                         | India       |
+| Meerut Cantonment              | India       |
+| Dehri                          | India       |
+| Delhi Cantonment               | India       |
+| Chhindwara                     | India       |
+| Bansberia                      | India       |
+| Nagaon                         | India       |
+| Kanpur Cantonment              | India       |
+| Vidisha                        | India       |
+| Bettiah                        | India       |
+| Purulia                        | India       |
+| Hassan                         | India       |
+| Ambala Sadar                   | India       |
+| Baidyabati                     | India       |
+| Morvi                          | India       |
+| Raigarh                        | India       |
+| Vejalpur                       | India       |
++--------------------------------+-------------+
+341 rows in set (0.05 sec)
+
+mysql> create or replace view indian_cities as
+    -> select city.name as cityname,country.name as countryname,city.population as citypopulation
+    -> from country inner join city
+    -> on city.countrycode=country.code where country.name='india';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
