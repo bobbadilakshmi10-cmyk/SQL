@@ -19107,3 +19107,287 @@ mysql> create or replace view indian_cities as
 Query OK, 0 rows affected (0.03 sec)
 
 mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------18-04-2026----------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8246]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> -- alter constraints
+mysql> use extra_data;
+Database changed
+mysql> create table book(bookid int,book_name varchar(50));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> -- alter to add primary key
+mysql> alter table book add primary key(bookid);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc book;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| bookid    | int         | NO   | PRI | NULL    |       |
+| book_name | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.03 sec)
+
+mysql> alter table book add unique key(bookname);
+ERROR 1072 (42000): Key column 'bookname' doesn't exist in table
+mysql> alter to add unique key;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to add unique key' at line 1
+mysql> -- alter to add unque key;
+mysql> alter table book add unique key(book_name);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc book
+    -> ;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| bookid    | int         | NO   | PRI | NULL    |       |
+| book_name | varchar(50) | YES  | UNI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table book modify column bookid into auto_increment;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'into auto_increment' at line 1
+mysql> alter table book modify column bookid int auto_increment;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc book;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| bookid    | int         | NO   | PRI | NULL    | auto_increment |
+| book_name | varchar(50) | YES  | UNI | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> alter table book modify column book_name varchar(50) not null;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table book auto_increment=200;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into book(book_name) values('life');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from book;
++--------+-----------+
+| bookid | book_name |
++--------+-----------+
+|    200 | life      |
++--------+-----------+
+1 row in set (0.00 sec)
+
+mysql> alter table book modify book_name varchar(50) not null default 'NA';
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc book;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| bookid    | int         | NO   | PRI | NULL    | auto_increment |
+| book_name | varchar(50) | NO   | UNI | NA      |                |
++-----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> create table rent_books(rentid int primary key,bookid int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc rent_books;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| rentid | int  | NO   | PRI | NULL    |       |
+| bookid | int  | YES  |     | NULL    |       |
++--------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table rent_books add foreign key(bookid) references book(bookid);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc rent_books;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| rentid | int  | NO   | PRI | NULL    |       |
+| bookid | int  | YES  | MUL | NULL    |       |
++--------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc book;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| bookid    | int         | NO   | PRI | NULL    | auto_increment |
+| book_name | varchar(50) | NO   | UNI | NA      |                |
++-----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> show create table rent_books;
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table      | Create Table                                                                                                                                                                                                                                                                                   |
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| rent_books | CREATE TABLE `rent_books` (
+  `rentid` int NOT NULL,
+  `bookid` int DEFAULT NULL,
+  PRIMARY KEY (`rentid`),
+  KEY `bookid` (`bookid`),
+  CONSTRAINT `rent_books_ibfk_1` FOREIGN KEY (`bookid`) REFERENCES `book` (`bookid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter talbe rent_books drop foreign key rent_books_ibfk_1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'talbe rent_books drop foreign key rent_books_ibfk_1' at line 1
+mysql> alter table rent_books drop foreign key rent_books_ibfk_1;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc rent_books;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| rentid | int  | NO   | PRI | NULL    |       |
+| bookid | int  | YES  | MUL | NULL    |       |
++--------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table rent_books drop bookid;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc rent_books;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| rentid | int  | NO   | PRI | NULL    |       |
++--------+------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> alter table book drop primary key;
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> desc book;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| bookid    | int         | NO   | PRI | NULL    | auto_increment |
+| book_name | varchar(50) | NO   | UNI | NA      |                |
++-----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> create table dummy(id int, unique key);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> create table dummy1(id int unique key);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc dummy1;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| id    | int  | YES  | UNI | NULL    |       |
++-------+------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> show create table dummy1;
++--------+----------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                                                 |
++--------+----------------------------------------------------------------------------------------------------------------------------------------------+
+| dummy1 | CREATE TABLE `dummy1` (
+  `id` int DEFAULT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+----------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table dumm1 drop index id;
+ERROR 1146 (42S02): Table 'extra_data.dumm1' doesn't exist
+mysql> alter table dummy1 drop index id;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc dummy1;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| id    | int  | YES  |     | NULL    |       |
++-------+------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> desc create table dummy1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'create table dummy1' at line 1
+mysql> show create table dummy1;
++--------+--------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                       |
++--------+--------------------------------------------------------------------------------------------------------------------+
+| dummy1 | CREATE TABLE `dummy1` (
+  `id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+--------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table dummy drop index id;
+ERROR 1091 (42000): Can't DROP 'id'; check that column/key exists
+mysql> alter table dummy1 drop index id;
+ERROR 1091 (42000): Can't DROP 'id'; check that column/key exists
+mysql> desc book;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| bookid    | int         | NO   | PRI | NULL    | auto_increment |
+| book_name | varchar(50) | NO   | UNI | NA      |                |
++-----------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql>
