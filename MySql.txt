@@ -19391,3 +19391,517 @@ mysql> desc book;
 2 rows in set (0.00 sec)
 
 mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------22-04-2026-----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8246]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| extra_db           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| relation_info      |
+| sample_data        |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.04 sec)
+
+mysql> use extra_data;
+Database changed
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
++---------+------------+------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from order_details;
++---------------+---------+-----------+----------+
+| OrderDetailID | OrderID | ProductID | Quantity |
++---------------+---------+-----------+----------+
+|             1 |       1 |       101 |        2 |
+|             2 |       2 |       102 |        1 |
+|             3 |       3 |       104 |        3 |
+|             4 |       4 |       103 |        1 |
+|             5 |       5 |       105 |        2 |
+|             6 |       6 |       104 |        3 |
++---------------+---------+-----------+----------+
+6 rows in set (0.01 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> ^Z
+Bye
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use extra_data;
+Database changed
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into orders values(7,2,'2026-04-22');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
+|       7 |          2 | 2026-04-22 |
++---------+------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> ^Z
+Bye
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 16
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use extra_data;
+Database changed
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
++---------+------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> set transaction;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into orders values(7,2,'2026-04-22');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into order_details values(7,7,102,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> commmit;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'commmit' at line 1
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
+|       7 |          2 | 2026-04-22 |
++---------+------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> ^Z
+Bye
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 17
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use extra_data;
+Database changed
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
+|       7 |          2 | 2026-04-22 |
++---------+------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from order_details;
++---------------+---------+-----------+----------+
+| OrderDetailID | OrderID | ProductID | Quantity |
++---------------+---------+-----------+----------+
+|             1 |       1 |       101 |        2 |
+|             2 |       2 |       102 |        1 |
+|             3 |       3 |       104 |        3 |
+|             4 |       4 |       103 |        1 |
+|             5 |       5 |       105 |        2 |
+|             6 |       6 |       104 |        3 |
+|             7 |       7 |       102 |        3 |
++---------------+---------+-----------+----------+
+7 rows in set (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into orders values(8,2,'2026-04-22');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
+|       7 |          2 | 2026-04-22 |
+|       8 |          2 | 2026-04-22 |
++---------+------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
+|       7 |          2 | 2026-04-22 |
++---------+------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from order_details;
++---------------+---------+-----------+----------+
+| OrderDetailID | OrderID | ProductID | Quantity |
++---------------+---------+-----------+----------+
+|             1 |       1 |       101 |        2 |
+|             2 |       2 |       102 |        1 |
+|             3 |       3 |       104 |        3 |
+|             4 |       4 |       103 |        1 |
+|             5 |       5 |       105 |        2 |
+|             6 |       6 |       104 |        3 |
+|             7 |       7 |       102 |        3 |
++---------------+---------+-----------+----------+
+7 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into orders values(8,2,'2026-04-22');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> sacepoint a;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sacepoint a' at line 1
+mysql> savepoint a;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into order_details values(8,8,106,5);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`extra_data`.`order_details`, CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`))
+mysql> insert into order_details value(8,8,106,5);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`extra_data`.`order_details`, CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`ProductID`) REFERENCES `product` (`ProductID`))
+mysql> rollback to savepointa;
+ERROR 1305 (42000): SAVEPOINT savepointa does not exist
+mysql> rollback to savepoint a;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into order_details value(8,9,106,5);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`extra_data`.`order_details`, CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`))
+mysql> savepoit b;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'savepoit b' at line 1
+mysql> insert into orders value(9,3,'2026-04-22');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint b;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into orders value(10,3,'2026-04-22');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint c;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> rollback to savepoint b;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|       1 |          1 | 2024-02-10 |
+|       2 |          2 | 2024-02-11 |
+|       3 |          3 | 2024-02-12 |
+|       4 |          1 | 2024-02-13 |
+|       5 |          4 | 2024-02-14 |
+|       6 |          1 | 2025-12-11 |
+|       7 |          2 | 2026-04-22 |
+|       8 |          2 | 2026-04-22 |
+|       9 |          3 | 2026-04-22 |
++---------+------------+------------+
+9 rows in set (0.00 sec)
+
+mysql> create user 'sale_person'@localhost identified by 'admin123';
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> ^Z
+Bye
+
+C:\Users\bobba>mysql -u sale_person -p
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 18
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
++--------------------+
+2 rows in set (0.00 sec)
+
+mysql> ^Z
+Bye
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 19
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> grant select on extra_data.customers to 'sale_person'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> ^Z
+Bye
+
+C:\Users\bobba>-u sale_person -p;
+'-u' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\bobba>admin123
+'admin123' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\bobba>mysql -u sale_person -p;
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1045 (28000): Access denied for user 'sale_person'@'localhost' (using password: YES)
+
+C:\Users\bobba>mysql -u sale_person -p
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 21
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| information_schema |
+| performance_schema |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> use extra_data;
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_extra_data |
++----------------------+
+| customers            |
++----------------------+
+1 row in set (0.02 sec)
+
+mysql> ^Z
+Bye
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 22
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> revoke select on extra_data.customers from 'sale_person'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> ^Z
+Bye
+
+C:\Users\bobba>mysql -u sale_person -p
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 23
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
++--------------------+
+2 rows in set (0.00 sec)
+
+mysql>
