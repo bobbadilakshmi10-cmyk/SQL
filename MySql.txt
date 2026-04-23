@@ -19905,3 +19905,58 @@ mysql> show databases;
 2 rows in set (0.00 sec)
 
 mysql>
+
+
+
+
+
+
+
+
+
+-----------------------23-04-2223-----------------------------
+
+
+
+
+
+
+
+
+
+
+
+Normalization in mysql:
+Normalization in SQL is a systematic process of organizing a relational database to reduce data redundancy and improve data integrity. 
+1. First Normal Form (1NF): Atomicity
+A table is in 1NF if it satisfies the following rules:
+Atomic Values: Every cell must contain only a single, indivisible value (no lists or comma-separated values).
+2. Second Normal Form (2NF): Full Dependency 
+A table is in 2NF if it is in 1NF and meets this additional rule: 
+No Partial Dependencies: Every non-key attribute must depend on the entire primary key.
+3. Third Normal Form (3NF): Non-Transitivity
+A table is in 3NF if it is in 2NF and meets this final common standard: 
+No Transitive Dependencies: Non-key attributes must not depend on other non-key attributes.
+Keys in DBMS are attributes (columns) or sets of attributes used to uniquely identify rows (tuples) within a table. 
+Key Concepts and Types:
+Super Key: A set of one or more attributes that can uniquely identify a record within a table.
+Candidate Key: A minimal super key—no subset of it can uniquely identify records.
+Primary Key: The specific candidate key chosen by the database designer to uniquely identify tuples, which cannot contain NULL values.
+Foreign Key: A field that links two tables together, representing a primary key from another table.
+Unique Key: Ensures all values in a column are distinct, allowing one NULL value.
+Composite Key: A key composed of two or more columns that together achieve uniqueness, used when a single column cannot identify rows.
+
+Alternate Key: Any candidate key that is not selected as the primary key
+
+Summary of all keys:
+In a relational database (DBMS), keys are attributes used to uniquely identify, relate, and organize data, ensuring data integrity. Key types include Primary (unique ID), Candidate (potential unique IDs), Super (any unique set), Foreign (links tables), Alternate (unused candidate), Composite (multi-column key), and Surrogate (system-generated).
+
+Introduction of ER Model
+The Entity-Relationship Model (ER Model) is a conceptual model for designing a database. This model represents the logical structure of a database, including entities, their attributes, and relationships between them.
+
+Entity: An object that is stored as data. E.g: Student, Course, or Company.
+
+Attribute: Properties that describe an entity. E.g: StudentID, CourseName, or EmployeeEmail.
+
+Relationship: A connection between entities. E.g: Student enrolls in a Course.
+
