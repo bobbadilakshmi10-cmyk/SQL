@@ -19960,3 +19960,180 @@ Attribute: Properties that describe an entity. E.g: StudentID, CourseName, or Em
 
 Relationship: A connection between entities. E.g: Student enrolls in a Course.
 
+
+
+
+
+
+
+---------------------------24-04-2026--------------------------------
+
+
+
+
+
+
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8246]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 24
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database insta_clone;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> use insta_clone;
+Database changed
+mysql> create table users(userid char(3) primary key,username varchar(50) not null,
+    -> userpassword varchar(50) not null);
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> create table follows(followee_id char(3),follower_id char(3),
+    -> created_at datetime default now(),
+    -> foreign key(followee_id) references users(userid),
+    -> foreign key(follower_id) references users(userid),
+    -> primary key(folloee_id,follower_id));
+ERROR 1072 (42000): Key column 'folloee_id' doesn't exist in table
+mysql> create table follows(followee_id char(3),follower_id char(3),
+    -> created_at datetime default now(),
+    -> foreign key(followee_id) references users(userid),
+    -> foreign key(follower_id) references users(userid),
+    -> primary key(followee_id,follower_id));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into users values('ur1','NTR','NTR123'),('ur2','ANR','ANR123'),
+    -> ('ur3','Krishna','Krishna123'),('ur3'4,'sobanbabu','babu123'),('ur3','mohanbabu','mohan123');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '4,'sobanbabu','babu123'),('ur3','mohanbabu','mohan123')' at line 2
+mysql> insert into users values('ur1','NTR','NTR123'),('ur2','ANR','ANR123'),
+    -> ('ur3','Krishna','Krishna123'),('ur4','sobanbabu','babu123'),('ur5','mohanbabu','mohan123');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into follows(followee_id,follower_id) values('ur2','ur1');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into follows(followee_id,follower_id) values('ur3','ur1');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into follows(followee_id,follower_id) values('ur1','ur2');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into follows(followee_id,follower_id) values('ur3','ur2');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into follows(followee_id,follower_id) values('ur4','ur2');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into follows(followee_id,follower_id) values('ur4','ur3');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into follows(followee_id,follower_id) values('ur1','ur3');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into follows(followee_id,follower_id) values('ur3','ur4');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> delete from follows where followee_id='ur4' and follower_id='ur3';
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from users;
++--------+-----------+--------------+
+| userid | username  | userpassword |
++--------+-----------+--------------+
+| ur1    | NTR       | NTR123       |
+| ur2    | ANR       | ANR123       |
+| ur3    | Krishna   | Krishna123   |
+| ur4    | sobanbabu | babu123      |
+| ur5    | mohanbabu | mohan123     |
++--------+-----------+--------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from follows;
++-------------+-------------+---------------------+
+| followee_id | follower_id | created_at          |
++-------------+-------------+---------------------+
+| ur1         | ur2         | 2026-04-24 12:21:01 |
+| ur1         | ur3         | 2026-04-24 12:22:21 |
+| ur2         | ur1         | 2026-04-24 12:20:22 |
+| ur3         | ur1         | 2026-04-24 12:20:41 |
+| ur3         | ur2         | 2026-04-24 12:21:12 |
+| ur3         | ur4         | 2026-04-24 12:22:27 |
+| ur4         | ur2         | 2026-04-24 12:21:22 |
++-------------+-------------+---------------------+
+7 rows in set (0.00 sec)
+
+mysql> -- fetch follower_id's where ur1 follows;
+mysql> select follower_id from follows where followee_id='ur1';
++-------------+
+| follower_id |
++-------------+
+| ur2         |
+| ur3         |
++-------------+
+2 rows in set (0.01 sec)
+
+mysql> -- fetch each followee_id count of followers
+mysql> select followee_id,count(follower_id) from follows group by followee_id;
++-------------+--------------------+
+| followee_id | count(follower_id) |
++-------------+--------------------+
+| ur1         |                  2 |
+| ur2         |                  1 |
+| ur3         |                  3 |
+| ur4         |                  1 |
++-------------+--------------------+
+4 rows in set (0.01 sec)
+
+mysql> -- fetch each followee_id who has single followers;
+mysql> select followee_id,count(follower_id) from follows group by followee_id
+    -> having count(follower_id)=1;
++-------------+--------------------+
+| followee_id | count(follower_id) |
++-------------+--------------------+
+| ur2         |                  1 |
+| ur4         |                  1 |
++-------------+--------------------+
+2 rows in set (0.00 sec)
+
+mysql> -- fetch followee_id,count of followers who has heighest followers count;
+mysql> select followee_id,count(follower_id) from follows group by followee_id
+    -> order by count(follower_id) desc limit 1;
++-------------+--------------------+
+| followee_id | count(follower_id) |
++-------------+--------------------+
+| ur3         |                  3 |
++-------------+--------------------+
+1 row in set (0.01 sec)
+
+mysql> --fetch user name who has no follower count;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--fetch user name who has no follower count' at line 1
+mysql> -- fetch user name who has no follower count;
+mysql> select username from users where userid not in
+    -> (select followee_id from follows);
++-----------+
+| username  |
++-----------+
+| mohanbabu |
++-----------+
+1 row in set (0.01 sec)
+
+mysql>
