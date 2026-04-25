@@ -20137,3 +20137,205 @@ mysql> select username from users where userid not in
 1 row in set (0.01 sec)
 
 mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------25-04-2026----------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Microsoft Windows [Version 10.0.26200.8246]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\bobba>show databases;
+'show' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\bobba>mysql --version
+mysql  Ver 8.0.45 for Win64 on x86_64 (MySQL Community Server - GPL)
+
+C:\Users\bobba>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 25
+Server version: 8.0.45 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| extra_data         |
+| extra_db           |
+| information_schema |
+| insta_clone        |
+| mysql              |
+| performance_schema |
+| relation_info      |
+| sample_data        |
+| sys                |
+| world              |
++--------------------+
+10 rows in set (0.07 sec)
+
+mysql> use insta_clone;
+Database changed
+mysql> select * from users;
++--------+-----------+--------------+
+| userid | username  | userpassword |
++--------+-----------+--------------+
+| ur1    | NTR       | NTR123       |
+| ur2    | ANR       | ANR123       |
+| ur3    | Krishna   | Krishna123   |
+| ur4    | sobanbabu | babu123      |
+| ur5    | mohanbabu | mohan123     |
++--------+-----------+--------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from follows;
++-------------+-------------+---------------------+
+| followee_id | follower_id | created_at          |
++-------------+-------------+---------------------+
+| ur1         | ur2         | 2026-04-24 12:21:01 |
+| ur1         | ur3         | 2026-04-24 12:22:21 |
+| ur2         | ur1         | 2026-04-24 12:20:22 |
+| ur3         | ur1         | 2026-04-24 12:20:41 |
+| ur3         | ur2         | 2026-04-24 12:21:12 |
+| ur3         | ur4         | 2026-04-24 12:22:27 |
+| ur4         | ur2         | 2026-04-24 12:21:22 |
++-------------+-------------+---------------------+
+7 rows in set (0.00 sec)
+
+mysql> -- fetch username with highest following count;
+mysql> select count(followee_id) as following,follower_id from
+    -> follows
+    -> group by follower_id order by following desc limit 1;
++-----------+-------------+
+| following | follower_id |
++-----------+-------------+
+|         3 | ur2         |
++-----------+-------------+
+1 row in set (0.01 sec)
+
+mysql> select username from users where userid=
+    -> (select follower_id from follows group by follower_id
+    -> order by count(follower_id) desc limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> select username from users where userid=
+    -> (select follower_id from follows group by follower_id
+    -> order by count(follower_id) desc limit 1);
++----------+
+| username |
++----------+
+| ANR      |
++----------+
+1 row in set (0.01 sec)
+
+mysql> select username,count(followee_id) from users left join follows on users.userid=follows.follower_id
+    -> group by userid order by count(followee_id);
++-----------+--------------------+
+| username  | count(followee_id) |
++-----------+--------------------+
+| mohanbabu |                  0 |
+| Krishna   |                  1 |
+| sobanbabu |                  1 |
+| NTR       |                  2 |
+| ANR       |                  3 |
++-----------+--------------------+
+5 rows in set (0.00 sec)
+
+mysql> select username from users left join follows on users.userid=follows.follower_id
+    -> groub by userid order by count(followee_id) desc limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'groub by userid order by count(followee_id) desc limit 1' at line 2
+mysql> select username from users left join follows on users.userid=follows.follower_id
+    -> group by userid order by count(followee_id) desc limit 1;
++----------+
+| username |
++----------+
+| ANR      |
++----------+
+1 row in set (0.00 sec)
+
+mysql> --fetch user name who follow each other;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--fetch user name who follow each other' at line 1
+mysql> --fetch user name who follow each other;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--fetch user name who follow each other' at line 1
+mysql> -- fetch user name who follow each other;
+mysql> select u1.username,u2.username from follows f1 inner join follows f2
+    -> on f1.followee_id=f2.follower_id and f1.follower_id=f2.followee_id inner join
+    -> u2.userid=f2.followee_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=f2.followee_id' at line 3
+mysql> select u1.username,u2.username from follows f1 inner join follows f2
+    -> on f1.followee_id=f2.follower_id and f1.follower_id=f2.followee_id inner join
+    -> users u1 on u1.userid=f1.followee_id inner join users u2 on
+    -> u2.userid=f2.followee_id;
++----------+----------+
+| username | username |
++----------+----------+
+| ANR      | NTR      |
+| Krishna  | NTR      |
+| NTR      | ANR      |
+| NTR      | Krishna  |
++----------+----------+
+4 rows in set (0.01 sec)
+
+mysql> -- fetch username,follower count,following count;
+mysql> select u1.username,count(distinct f1.follower_id) as followers, count(distinct f2.followee_id) as following
+    -> from users u1 left join follows f1 on i1.userid=f1.followee_id left join follows f2
+    -> on u1.userid=f2.follower_id group by u1.userid;
+ERROR 1054 (42S22): Unknown column 'i1.userid' in 'on clause'
+mysql> select u1.username,count(distinct f1.follower_id) as followers, count(distinct f2.followee_id) as following
+    -> from users u1 left join follows f1 on u1.userid=f1.followee_id left join follows f2
+    -> on u1.userid=f2.follower_id group by u1.userid;
++-----------+-----------+-----------+
+| username  | followers | following |
++-----------+-----------+-----------+
+| NTR       |         2 |         2 |
+| ANR       |         1 |         3 |
+| Krishna   |         3 |         1 |
+| sobanbabu |         1 |         1 |
+| mohanbabu |         0 |         0 |
++-----------+-----------+-----------+
+5 rows in set (0.01 sec)
+
+mysql> 
